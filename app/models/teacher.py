@@ -2,6 +2,9 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+class Area(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200), nullable=False)
 class Teacher(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
@@ -12,6 +15,14 @@ class TeacherSchedule(db.Model):
     end_time = db.Column(db.Time, nullable=False)
     day_of_week = db.Column(db.Integer, nullable=False)
     period = db.Column(db.Integer, nullable=False)
+
+class Course(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200), nullable=False)
+    no_semester = db.Column(db.Integer, nullable=False)
+    tp_course_type = db.Column(db.Integer, nullable=False)
+    area = db.Column(db.Integer, nullable=False)
+
 
 class CourseTeacher(db.Model):
     id = db.Column(db.Integer, primary_key=True)
