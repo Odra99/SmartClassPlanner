@@ -1,16 +1,30 @@
 from flask import Flask
-from dotenv import load_dotenv
+from flask_migrate import Migrate
 
-load_dotenv()
+from config import Config
+from app.extensions import db
+from app.model import *
+from app.ETL import *
 
-def create_app():
+
+def create_app(config_class=Config):
+
     app = Flask(__name__)
-    app.config.from_pyfile('config.py')
+    app.config.from_object(config_class)
 
-    from app.routes import bp as main_bp
+    db.init_app(app)
+    migrate = Migrate(app,db)    
+
+    from app.main import bp as main_bp
     app.register_blueprint(main_bp)
 
-
+    @app.get("/hello")
+    def home():
+        generalETL.etlArea('/home/odra/Documents/Area.csv')
+        return "Hello, world!!"
+    
     return app
 
-app = create_app()  # Esto debe estar fuera de la función
+
+
+
