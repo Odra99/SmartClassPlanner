@@ -20,7 +20,6 @@ def create_app(config_class=Config):
 
     @app.get("/hello")
     def home():
-        generalETL.etlArea('/home/odra/Documents/Area.csv')
         return "Hello, world!!"
     
     return app
