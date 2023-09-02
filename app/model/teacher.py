@@ -9,7 +9,7 @@ class Teacher(db.Model):
 class TeacherSchedule(db.Model):
     __tablename__="teacher_schedule"
     id = db.Column(db.BIGINT, primary_key=True)
-    day = db.Column(db.BIGINT, db.ForeignKey('type.id'))
+    day = db.Column(db.BIGINT, db.ForeignKey('type.id'),nullable=True)
     start_time = db.Column(db.TIME, nullable=False)
     end_time = db.Column(db.TIME, nullable=False)
     teacher_id = db.Column(db.BIGINT, db.ForeignKey('teacher.id'))

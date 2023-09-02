@@ -1,12 +1,12 @@
-import pandas as pd
 from app.extensions import db
 from app.model.general import Area
+from app.ETL.generalFunctions import getDataFrame
 
 
-def etlArea(area):
-    df = pd.read_csv(area)
+def etlArea(url):
+    df = getDataFrame(url)
     for i in range(len(df)):
-        area = Area(name=df.iloc[i]['name'])
-        db.session.add(area)
+        aux = Area(name=df.iloc[i]['name'])
+        db.session.add(aux)
     db.session.commit()
     
