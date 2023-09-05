@@ -15,3 +15,10 @@ class Area(db.Model):
     __tablename__="area"
     id = db.Column(db.BIGINT, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
+
+class Restrictions(db.Model):
+    __tablename__="restriction"
+    id = db.Column(db.BIGINT, primary_key=True)
+    type = db.Column(db.BIGINT, db.ForeignKey('type.id'))
+    name = db.Column(db.String(150), nullable=False)
+    value = db.Column(db.String(150), nullable=False)

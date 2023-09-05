@@ -22,7 +22,7 @@ class ClassOP(db.Model):
     __tablename__="class_op"
     id = db.Column(db.BIGINT, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
-    number = db.Column(db.Integer, nullable=False)
+    space_capacity = db.Column(db.Integer, nullable=False)
     
 
 class CharacteristicClassOP(db.Model):

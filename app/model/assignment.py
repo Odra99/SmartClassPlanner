@@ -10,5 +10,6 @@ class Assignment(db.Model):
     schedule_id = db.Column(db.BIGINT, db.ForeignKey('schedule.id'))
     start_time = db.Column(db.TIME, nullable=False)
     end_time = db.Column(db.TIME, nullable=False)
+    no_students = db.Column(db.Integer, nullable=False)
     section = db.Column(db.String(4), nullable=False)
 
