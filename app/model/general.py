@@ -16,6 +16,11 @@ class Area(db.Model):
     id = db.Column(db.BIGINT, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
 
+class AreaOp(db.Model):
+    __tablename__="area_op"
+    id = db.Column(db.BIGINT, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+
 class Restrictions(db.Model):
     __tablename__="restriction"
     id = db.Column(db.BIGINT, primary_key=True)

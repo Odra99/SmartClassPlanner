@@ -26,12 +26,13 @@ def teacherAvailabilityCriteria(schedule:Schedule):
                             teacherScheduleTime = datetime.strptime(str(teacherSchedule.start_time), '%H:%M').time() 
                             teacherScheduleEndTime = datetime.strptime(str(teacherSchedule.end_time), '%H:%M').time() 
                             notAvailable = False
-                            while not __isTeacherAvailable(assignments,teacher,teacherScheduleTime):
-                                teacherScheduleTime = teacherScheduleTime + period_duration
-                                if(teacherScheduleTime==teacherScheduleEndTime):
+                            while not __isTeacherAvailable(assignments,teacher,teacherScheduleTime) and teacherScheduleTime<teacherScheduleEndTime:
+                                teacherScheduleTime = teacherScheduleTime + (period_duration * course.no_periods)
+                            
+                            if(teacherScheduleTime>=teacherScheduleEndTime):
                                     notAvailable = True
                             if not notAvailable:
-                                teacherScheduleEndTime = teacherScheduleTime + period_duration
+                                teacherScheduleEndTime = teacherScheduleTime + (period_duration * course.no_periods)
                                 classE = classSpaceCriteria(classes)
                                 assignmentAuxiliar = Assignment(course=course,teacher=teacher,schedule=schedule,start_time=teacherScheduleTime,end_time=teacherScheduleEndTime)
                                 assignments.append(assignmentAuxiliar)

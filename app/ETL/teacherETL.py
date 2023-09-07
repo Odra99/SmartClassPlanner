@@ -20,5 +20,3 @@ def __etlTeacherSchedule(df,aux_id):
         schedules.append(aux)
     return schedules
         
-
-4

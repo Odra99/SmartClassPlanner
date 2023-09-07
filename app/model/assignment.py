@@ -13,3 +13,6 @@ class Assignment(db.Model):
     no_students = db.Column(db.Integer, nullable=False)
     section = db.Column(db.String(4), nullable=False)
 
+
+    course = db.relationship('CourseOP', back_populates='assignment')
+

@@ -5,6 +5,7 @@ class Teacher(db.Model):
     id = db.Column(db.BIGINT, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
     teacher_schedule = db.relationship('TeacherSchedule', back_populates='teacher')
+    courses = db.relationship('CourseTeacher', back_populates='teacher')
     
 
 class TeacherSchedule(db.Model):
@@ -14,7 +15,7 @@ class TeacherSchedule(db.Model):
     start_time = db.Column(db.TIME, nullable=False)
     end_time = db.Column(db.TIME, nullable=False)
     teacher_id = db.Column(db.BIGINT, db.ForeignKey('teacher.id'))
-    area_id = db.Column(db.Integer, nullable=False) 
+    area_id = db.Column(db.BIGINT,  db.ForeignKey('area.id')) 
 
 
     teacher = db.relationship('Teacher', back_populates='teacher_schedule')
@@ -37,7 +38,7 @@ class TeacherScheduleOP(db.Model):
     start_time = db.Column(db.TIME, nullable=False)
     end_time = db.Column(db.TIME, nullable=False)
     teacher_id = db.Column(db.BIGINT, db.ForeignKey('teacher_op.id'))
-    area_id = db.Column(db.Integer, nullable=False) 
+    area_id = db.Column(db.BIGINT,  db.ForeignKey('area_op.id')) 
 
 
     teacher = db.relationship('TeacherOP', back_populates='teacher_schedule')

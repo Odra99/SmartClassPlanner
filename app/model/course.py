@@ -10,6 +10,7 @@ class Course(db.Model):
     semester = db.Column(db.Integer,  nullable=True) 
     no_periods = db.Column(db.Integer,  nullable=True) 
 
+
 class CourseSchedule(db.Model):
     __tablename__="course_schedule"
     id = db.Column(db.BIGINT, primary_key=True)
@@ -42,7 +43,7 @@ class CourseOP(db.Model):
 
     course_schedule = db.relationship('CourseScheduleOP', back_populates='course')
     schedule = db.relationship('Schedule', back_populates='courses')
-    assignment = db.relationship('Assignment', back_populates='assignmet')
+    assignment = db.relationship('Assignment', back_populates='course')
     course_teachers = db.relationship('CourseTeacherOP', back_populates='course')
 
     assigned = False
@@ -53,7 +54,6 @@ class CourseScheduleOP(db.Model):
     start_time = db.Column(db.TIME, nullable=False)
     end_time = db.Column(db.TIME, nullable=False)
     course_id = db.Column(db.BIGINT,  db.ForeignKey('course_op.id'))
-    area_id = db.Column(db.BIGINT,  db.ForeignKey('area.id')) 
     
 
     course = db.relationship('CourseOP', back_populates='course_schedule')
@@ -68,5 +68,5 @@ class CourseTeacherOP(db.Model):
     priority = db.Column(db.Integer, nullable=False)
     
 
-    teacher = db.relationship('TeacherOP', back_populates='courses')
+    teachers = db.relationship('TeacherOP', back_populates='courses')
     course = db.relationship('CourseOP', back_populates='course_teachers')
