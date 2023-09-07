@@ -5,36 +5,44 @@ class Class(db.Model):
     id = db.Column(db.BIGINT, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
     space_capacity = db.Column(db.Integer, nullable=False)
+
+
+    class_schedule = db.relationship('ClassSchedule', back_populates='classE')
     
 
-class CharacteristicClass(db.Model):
-    __tablename__="class_characteristic"
+class ClassSchedule(db.Model):
+    __tablename__="class_schedule"
     id = db.Column(db.BIGINT, primary_key=True)
-    name = db.Column(db.String(200), nullable=False)
-
-class ClassCharacteristic(db.Model):
-    __tablename__="characteristic_class"
-    id = db.Column(db.BIGINT, primary_key=True)
+    day = db.Column(db.BIGINT, db.ForeignKey('type.id'),nullable=True)
+    start_time = db.Column(db.TIME, nullable=False)
+    end_time = db.Column(db.TIME, nullable=False)
     class_id = db.Column(db.BIGINT, db.ForeignKey('class.id'))
-    characteristic_id = db.Column(db.BIGINT, db.ForeignKey('class_characteristic.id'))
+    area_id = db.Column(db.BIGINT,  db.ForeignKey('area.id')) 
+
+
+    classE = db.relationship('Class', back_populates='class_schedule')
 
 class ClassOP(db.Model):
-    __tablename__="class_op"
+    __tablename__="class_oc"
     id = db.Column(db.BIGINT, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
     space_capacity = db.Column(db.Integer, nullable=False)
+
+
+    class_schedule = db.relationship('ClassScheduleOP', back_populates='classE')
     
-
-class CharacteristicClassOP(db.Model):
-    __tablename__="class_characteristic_op"
+class ClassScheduleOP(db.Model):
+    __tablename__="class_schedule_oc"
     id = db.Column(db.BIGINT, primary_key=True)
-    name = db.Column(db.String(200), nullable=False)
+    day = db.Column(db.BIGINT, db.ForeignKey('type.id'),nullable=True)
+    start_time = db.Column(db.TIME, nullable=False)
+    end_time = db.Column(db.TIME, nullable=False)
+    class_id = db.Column(db.BIGINT, db.ForeignKey('class_oc.id'))
+    area_id = db.Column(db.BIGINT,  db.ForeignKey('area_oc.id')) 
 
-class ClassCharacteristicOP(db.Model):
-    __tablename__="characteristic_class_op"
-    id = db.Column(db.BIGINT, primary_key=True)
-    class_id = db.Column(db.BIGINT, db.ForeignKey('class_op.id'))
-    characteristic_id = db.Column(db.BIGINT, db.ForeignKey('class_characteristic_op.id'))
+
+    classE = db.relationship('Class', back_populates='class_schedule')
+
 
 
 

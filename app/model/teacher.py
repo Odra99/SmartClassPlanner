@@ -22,7 +22,7 @@ class TeacherSchedule(db.Model):
 
 
 class TeacherOP(db.Model):
-    __tablename__="teacher_op"
+    __tablename__="teacher_oc"
     id = db.Column(db.BIGINT, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
     schedule_id = db.Column(db.BIGINT,  db.ForeignKey('schedule.id'))
@@ -32,13 +32,13 @@ class TeacherOP(db.Model):
     schedule = db.relationship('Schedule', back_populates='teachers')
 
 class TeacherScheduleOP(db.Model):
-    __tablename__="teacher_schedule_op"
+    __tablename__="teacher_schedule_oc"
     id = db.Column(db.BIGINT, primary_key=True)
     day = db.Column(db.BIGINT, db.ForeignKey('type.id'))
     start_time = db.Column(db.TIME, nullable=False)
     end_time = db.Column(db.TIME, nullable=False)
-    teacher_id = db.Column(db.BIGINT, db.ForeignKey('teacher_op.id'))
-    area_id = db.Column(db.BIGINT,  db.ForeignKey('area_op.id')) 
+    teacher_id = db.Column(db.BIGINT, db.ForeignKey('teacher_oc.id'))
+    area_id = db.Column(db.BIGINT,  db.ForeignKey('area_oc.id')) 
 
 
     teacher = db.relationship('TeacherOP', back_populates='teacher_schedule')

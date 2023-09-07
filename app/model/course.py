@@ -30,7 +30,7 @@ class CourseTeacher(db.Model):
     teacher = db.relationship('Teacher', back_populates='courses')
 
 class CourseOP(db.Model):
-    __tablename__="course_op"
+    __tablename__="course_oc"
     id = db.Column(db.BIGINT, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
     code = db.Column(db.String(10), nullable=True)
@@ -48,12 +48,12 @@ class CourseOP(db.Model):
 
     assigned = False
 class CourseScheduleOP(db.Model):
-    __tablename__="course_schedule_op"
+    __tablename__="course_schedule_oc"
     id = db.Column(db.BIGINT, primary_key=True)
     day = db.Column(db.BIGINT, db.ForeignKey('type.id'))
     start_time = db.Column(db.TIME, nullable=False)
     end_time = db.Column(db.TIME, nullable=False)
-    course_id = db.Column(db.BIGINT,  db.ForeignKey('course_op.id'))
+    course_id = db.Column(db.BIGINT,  db.ForeignKey('course_oc.id'))
     
 
     course = db.relationship('CourseOP', back_populates='course_schedule')
@@ -61,10 +61,10 @@ class CourseScheduleOP(db.Model):
 
 
 class CourseTeacherOP(db.Model):
-    __tablename__="course_teacher_op"
+    __tablename__="course_teacher_oc"
     id = db.Column(db.BIGINT, primary_key=True)
-    course_id = db.Column(db.BIGINT,  db.ForeignKey('course_op.id'))
-    teacher_id = db.Column(db.BIGINT, db.ForeignKey('teacher_op.id'))
+    course_id = db.Column(db.BIGINT,  db.ForeignKey('course_oc.id'))
+    teacher_id = db.Column(db.BIGINT, db.ForeignKey('teacher_oc.id'))
     priority = db.Column(db.Integer, nullable=False)
     
 

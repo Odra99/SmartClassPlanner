@@ -3,7 +3,7 @@ from app.extensions import db
 class Schedule(db.Model):
     __tablename__="schedule"
     id = db.Column(db.BIGINT, primary_key=True)
-    parent_id = db.Column(db.BIGINT, nullable=False)
+    parent_id = db.Column(db.BIGINT, nullable=True)
     date = db.Column(db.TIMESTAMP,nullable=False)
     priority_criterias = db.relationship('ScheduleConfigurationPriorityCriteria', back_populates='schedule')
     classes_configurations = db.relationship('ScheduleClassConfiguration', back_populates='schedule')
@@ -39,7 +39,7 @@ class ScheduleClassConfiguration(db.Model):
     __tablename__="schedule_class_configuration"
     id = db.Column(db.BIGINT, primary_key=True)
     schedule_id = db.Column(db.BIGINT,  db.ForeignKey('schedule.id'))
-    class_id = db.Column(db.BIGINT,  db.ForeignKey('class_op.id'))
+    class_id = db.Column(db.BIGINT,  db.ForeignKey('class_oc.id'))
     area_id = db.Column(db.BIGINT,  db.ForeignKey('area.id'))
     status = db.Column(db.BIGINT, db.ForeignKey('type.id'))
 

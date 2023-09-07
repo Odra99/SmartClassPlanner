@@ -8,7 +8,7 @@ class PriorityCriteria(db.Model):
 class Type(db.Model):
     __tablename__="type"
     id = db.Column(db.BIGINT, primary_key=True)
-    parent_type = db.Column(db.String(100), nullable=False)
+    parent_type = db.Column(db.BIGINT, nullable=True)
     value = db.Column(db.String(250), nullable=False)
 
 class Area(db.Model):
@@ -17,7 +17,7 @@ class Area(db.Model):
     name = db.Column(db.String(50), nullable=False)
 
 class AreaOp(db.Model):
-    __tablename__="area_op"
+    __tablename__="area_oc"
     id = db.Column(db.BIGINT, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
 
