@@ -17,11 +17,13 @@ class Area(db.Model):
     __tablename__="area"
     id = db.Column(db.BIGINT, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
+    color = db.Column(db.String(150), nullable=True)
 
 class AreaOp(db.Model):
     __tablename__="area_oc"
     id = db.Column(db.BIGINT, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
+    color = db.Column(db.String(150), nullable=True)
 
 class Restrictions(db.Model):
     __tablename__="restriction"
