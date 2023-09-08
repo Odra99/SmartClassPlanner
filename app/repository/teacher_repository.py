@@ -1,6 +1,4 @@
 from app.extensions import db
-from sqlalchemy import select
-from sqlalchemy.orm import selectinload
 from app.model.teacher import *
 
 def getAllTeachers():

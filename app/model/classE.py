@@ -27,9 +27,12 @@ class ClassOP(db.Model):
     id = db.Column(db.BIGINT, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
     space_capacity = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.BIGINT, db.ForeignKey('type.id'))
 
+    schedule_id = db.Column(db.BIGINT,  db.ForeignKey('schedule.id'))
 
     class_schedule = db.relationship('ClassScheduleOP', back_populates='classE')
+    schedule = db.relationship('Schedule', back_populates='classes_configurations')
     
 class ClassScheduleOP(db.Model):
     __tablename__="class_schedule_oc"
@@ -41,7 +44,7 @@ class ClassScheduleOP(db.Model):
     area_id = db.Column(db.BIGINT,  db.ForeignKey('area_oc.id')) 
 
 
-    classE = db.relationship('Class', back_populates='class_schedule')
+    classE = db.relationship('ClassOP', back_populates='class_schedule')
 
 
 

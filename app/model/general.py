@@ -4,6 +4,8 @@ class PriorityCriteria(db.Model):
     __tablename__="priority_criteria"
     id = db.Column(db.BIGINT, primary_key=True)
     description = db.Column(db.String(100), nullable=False)
+    type = db.Column(db.BIGINT, db.ForeignKey('type.id'))
+    subtype = db.Column(db.BIGINT, db.ForeignKey('type.id'))
 
 class Type(db.Model):
     __tablename__="type"

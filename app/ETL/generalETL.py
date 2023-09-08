@@ -9,4 +9,3 @@ def etlArea(url):
         aux = Area(name=df.iloc[i]['name'])
         db.session.add(aux)
     db.session.commit()
-    

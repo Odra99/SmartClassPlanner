@@ -5,11 +5,12 @@ class Course(db.Model):
     id = db.Column(db.BIGINT, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
     code = db.Column(db.String(10), nullable=True)
-    credits = db.Column(db.Integer, nullable=True)
+    credits = db.Column(db.Integer, nullable=True, default=0)
     area_id = db.Column(db.BIGINT,  db.ForeignKey('area.id')) 
     semester = db.Column(db.Integer,  nullable=True) 
     no_periods = db.Column(db.Integer,  nullable=True) 
 
+    course_schedule = db.relationship('CourseSchedule', back_populates='course')
 
 class CourseSchedule(db.Model):
     __tablename__="course_schedule"
@@ -18,7 +19,10 @@ class CourseSchedule(db.Model):
     start_time = db.Column(db.TIME, nullable=False)
     end_time = db.Column(db.TIME, nullable=False)
     course_id = db.Column(db.BIGINT,  db.ForeignKey('course.id'))
-    area_id = db.Column(db.BIGINT,  db.ForeignKey('area.id')) 
+    area_id = db.Column(db.BIGINT,  db.ForeignKey('area.id'),nullable=True) 
+
+
+    course = db.relationship('Course', back_populates='course_schedule')
 
 class CourseTeacher(db.Model):
     __tablename__="course_teacher"
@@ -29,6 +33,11 @@ class CourseTeacher(db.Model):
 
     teacher = db.relationship('Teacher', back_populates='courses')
 
+class CourseAssignments(db.Model):
+    __tablename__="course_assignment"
+    id = db.Column(db.BIGINT, primary_key=True)
+    code = db.Column(db.String(10), nullable=True)
+    no_students = db.Column(db.Integer, nullable=False)
 class CourseOP(db.Model):
     __tablename__="course_oc"
     id = db.Column(db.BIGINT, primary_key=True)

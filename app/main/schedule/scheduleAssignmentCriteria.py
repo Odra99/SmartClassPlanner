@@ -1,15 +1,19 @@
+from operator import itemgetter
 from app.model.schedule import *
 from app.model.assignment import *
 from app.model.teacher import *
 from app.model.classE import *
 from app.model.course import *
 from app.main.schedule.scheduleFunctions import *
-from app.enums import RestrictionEnum
+from app.enums import RestrictionEnum,PriorityTypeEnum
 import datetime
 
-def __spaceAvailabilityCriteria(schedule:Schedule,no_periods):
-      classes = schedule.classes
+def __spaceAvailabilityCriteria(schedule:Schedule):
+    classes= __sortClassPriority(schedule)
+    courses = __sortCoursePriority(schedule)
 
+
+    
 def teacherAvailabilityCriteria(schedule:Schedule):
     classes = schedule.classes
     assignments=[]
@@ -49,7 +53,29 @@ def classSpaceCriteria(classes:list[ClassOP],course:CourseOP,assignments: list[A
     return None
     
 
-         
+def __sortClassPriority(schedule:Schedule):
+    attributes_to_order = ['space_capacity']
+    space_capacity_pc = [pc for pc in schedule.priority_criterias if pc.subtype > PriorityTypeEnum.CLASS_SPACE_CAPACITY]
+    if(len(space_capacity_pc)):
+        return __custom_sort(schedule.classes_configurations,itemgetter(*attributes_to_order),reverse=space_capacity_pc[0].asc)    
+    return __custom_sort(schedule.classes_configurations,itemgetter(*attributes_to_order))
+    
+
+def __sortCoursePriority(schedule:Schedule):
+    course_pc = [pc for pc in schedule.priority_criterias if pc.type > PriorityTypeEnum.COURSE]
+    #Order by subtype
+    course_pc = sorted(course_pc,key=lambda pc : pc.order)
+    attributes_to_order = []
+    for pc in course_pc:
+        if(pc.subtype==PriorityTypeEnum.COURSE_AREA):
+            attributes_to_order.append('area_id')
+        if(pc.subtype==PriorityTypeEnum.COURSE_NO_STUDENTS):
+            attributes_to_order.append('no_students')
+        if(pc.subtype==PriorityTypeEnum.COURSE_SEMESTER):
+            attributes_to_order.append('semester')
+    return __custom_sort(schedule.courses,itemgetter(*attributes_to_order))
+
+    
 
 def __areaPriority(schedule:Schedule):
     return sorted(schedule.area_configurations,key=lambda area : area.priority)
@@ -90,3 +116,6 @@ def __isCourseAssignedForSameAreaAndSemester(assignments: list[Assignment], cour
             if assignment.course.semester == course.semester and assignment.course.area_id==course.area_id:
                 return True
     return False
+
+def __custom_sort(obj, key_func, reverse=False):
+    return sorted(obj, key=key_func, reverse=reverse)
