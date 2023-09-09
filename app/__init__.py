@@ -5,7 +5,7 @@ from config import Config
 from app.extensions import db
 from app.model import *
 from app.ETL import *
-from app.repository import *
+from app.main.schedule import *
 
 def create_app(config_class=Config):
 
@@ -22,7 +22,7 @@ def create_app(config_class=Config):
 
     @app.get("/hello")
     def home():
-        teacher_repository.getAllTeachers()
+        schedule.scheduleGeneration()
         return "Hello, world!!"
     
     return app

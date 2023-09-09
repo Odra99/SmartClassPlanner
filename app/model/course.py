@@ -11,6 +11,7 @@ class Course(db.Model):
     no_periods = db.Column(db.Integer,  nullable=True) 
 
     course_schedule = db.relationship('CourseSchedule', back_populates='course')
+    course_teacher = db.relationship('CourseTeacher', back_populates='course')
 
 class CourseSchedule(db.Model):
     __tablename__="course_schedule"
@@ -32,6 +33,7 @@ class CourseTeacher(db.Model):
     priority = db.Column(db.Integer, nullable=False)
 
     teacher = db.relationship('Teacher', back_populates='courses')
+    course = db.relationship('Course',back_populates='course_teacher')
 
 class CourseAssignments(db.Model):
     __tablename__="course_assignment"

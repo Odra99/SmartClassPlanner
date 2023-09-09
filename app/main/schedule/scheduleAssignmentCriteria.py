@@ -6,40 +6,45 @@ from app.model.classE import *
 from app.model.course import *
 from app.main.schedule.scheduleFunctions import *
 from app.enums import RestrictionEnum,PriorityTypeEnum
-import datetime
+from datetime import datetime,time,timedelta
 
-def __spaceAvailabilityCriteria(schedule:Schedule):
+def spaceAvailabilityCriteria(schedule:Schedule):
     classes= __sortClassPriority(schedule)
     courses = __sortCoursePriority(schedule)
 
 
     
 def teacherAvailabilityCriteria(schedule:Schedule):
-    classes = schedule.classes
+    classes = schedule.classes_configurations
     assignments=[]
-    period_duration_str = searchRestriction(schedule.restrictions, RestrictionEnum.PERIODS_DURATION)
-    period_duration = datetime.strptime(str(period_duration_str), '%H:%M').time()
-    for teacher in schedule.teacher_configurations:
+    #period_duration_str = searchRestriction(schedule.restrictions, RestrictionEnum.PERIODS_DURATION)
+    period_duration = datetime.strptime(str("00:50"), '%H:%M').time()
+    for teacher in schedule.teachers:
         for course in schedule.courses:
             if __isCourseAssigned(assignments,course):
                 continue
             for teacherCourse in teacher.courses:
-                if teacherCourse.code == course.code:
-                    for teacherSchedule in teacher.schedule:
+                if teacherCourse.course.code == course.code:
+                    for teacherSchedule in teacher.teacher_schedule:
                         if(teacherSchedule.area_id == course.area_id):
-                            teacherScheduleTime = datetime.strptime(str(teacherSchedule.start_time), '%H:%M').time() 
-                            teacherScheduleEndTime = datetime.strptime(str(teacherSchedule.end_time), '%H:%M').time() 
+                            teacherScheduleTime = datetime.strptime(str(teacherSchedule.start_time), '%H:%M:%S').time() 
+                            teacherScheduleEndTime = datetime.strptime(str(teacherSchedule.end_time), '%H:%M:%S').time() 
                             notAvailable = False
                             while not __isTeacherAvailable(assignments,teacher,teacherScheduleTime) and teacherScheduleTime<teacherScheduleEndTime:
-                                teacherScheduleTime = teacherScheduleTime + (period_duration * course.no_periods)
+                                timedelta1 = timedelta(hours=teacherScheduleTime.hour,minutes=teacherScheduleTime.minute)
+                                timedelta2 = timedelta(hours=period_duration.hour,minutes=period_duration.minute)
+                                teacherScheduleTime = timedelta1 + (timedelta2)
                             
                             if(teacherScheduleTime>=teacherScheduleEndTime):
                                     notAvailable = True
                             if not notAvailable:
-                                teacherScheduleEndTime = teacherScheduleTime + (period_duration * course.no_periods)
-                                classE = classSpaceCriteria(classes)
-                                assignmentAuxiliar = Assignment(course=course,teacher=teacher,schedule=schedule,start_time=teacherScheduleTime,end_time=teacherScheduleEndTime)
-                                assignments.append(assignmentAuxiliar)
+                                timedelta1 = timedelta(hours=teacherScheduleTime.hour,minutes=teacherScheduleTime.minute)
+                                timedelta2 = timedelta(hours=period_duration.hour,minutes=period_duration.minute)
+                                teacherScheduleEndTime = timedelta1 + (timedelta2 )
+                                classE = classSpaceCriteria(classes,course,assignments,teacherScheduleTime)
+                                if classE is not None:
+                                    assignmentAuxiliar = Assignment(class_id=classE.id,course=course,teacher_id=teacher.id,schedule_id=schedule.id,start_time=teacherScheduleTime,end_time=teacherScheduleEndTime)
+                                    assignments.append(assignmentAuxiliar)
                         break
                     break
 
@@ -83,9 +88,9 @@ def __areaPriority(schedule:Schedule):
 def __isTeacherAvailable(assignments: list[Assignment],teacher:TeacherOP, start_time):
     for assignment in assignments:
           if(teacher.id == assignment.teacher_id):
-            start_time_a = datetime.strptime(str(assignment.start_time), '%H:%M').time()
-            end_time_a = datetime.strptime(str(assignment.end_time), '%H:%M').time()
-            start_time_t = datetime.strptime(str(start_time), '%H:%M').time()
+            start_time_a = datetime.strptime(str(assignment.start_time), '%H:%M:%S').time()
+            end_time_a = datetime.strptime(str(assignment.end_time), '%H:%M:%S').time()
+            start_time_t = datetime.strptime(str(start_time), '%H:%M:%S').time()
             if(start_time_a==start_time_t):
                 return False
             if(start_time>start_time_a and start_time<=end_time_a):
