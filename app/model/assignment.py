@@ -15,4 +15,5 @@ class Assignment(db.Model):
 
 
     course = db.relationship('CourseOP', back_populates='assignment')
+    schedule = db.relationship('Schedule', back_populates='assignments')
 

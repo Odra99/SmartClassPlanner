@@ -11,6 +11,7 @@ class Schedule(db.Model):
     restrictions = db.relationship('ScheduleRestrictions', back_populates='schedule')
     area_configurations = db.relationship('ScheduleAreaConfiguration', back_populates='schedule')
     teachers = db.relationship('TeacherOP', back_populates='schedule')
+    assignments = db.relationship('Assignment', back_populates='schedule')
     status = db.Column(db.BIGINT, db.ForeignKey('type.id'))
     version = db.Column(db.Integer, nullable=False)
 

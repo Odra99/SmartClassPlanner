@@ -3,7 +3,8 @@ from app.model.general import *
 
 
 def getAllArea():
-    return db.session.query(Area).all()
+    all_areas =  db.session.query(Area).all()
+    return areas_schema.dump(all_areas)
 
 def getAllRestrictions():
     return db.session.query(Restrictions).all()

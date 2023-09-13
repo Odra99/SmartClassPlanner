@@ -16,6 +16,10 @@ def scheduleGeneration():
         schedule.teachers = __loadTeacher(schedule.id)
         db.session.add(schedule)
         db.session.commit()
+    else:
+        schedule = Schedule(date=datetime.datetime.now(),version=(schedule.version+1),status=StatusEnum.IN_PROGRESS.value,parent_id=schedule.id)
+    classTimes =  __PeriodsAvailables(schedule)
+    print(classTimes)
     teacherAvailabilityCriteria(schedule)
     
 
@@ -26,13 +30,23 @@ def __PeriodsAvailables(schedule:Schedule):
     end_time = searchRestriction(schedule.restrictions,RestrictionEnum.SCHEDULE_END_TIME)
     period_duration =searchRestriction(schedule.restrictions, RestrictionEnum.PERIODS_DURATION)
 
-    start = datetime.strptime(start_time, '%H:%M')
-    end = datetime.strptime(end_time, '%H:%M')
+    start = transformTimeDelta(start_time)
+    end = transformTimeDelta(end_time)
+    period_duration = transformTimeDelta(period_duration,'%H:%M')
 
     total_time = end - start
 
     no_peridos = (total_time / 60 / period_duration)
-    return no_peridos
+
+    classTimes = []
+
+    i = 0
+    
+    while i < no_peridos:
+        aux = start_time + (i*period_duration) 
+        classTimes.append(aux)
+    return classTimes
+
 
 def __loadClasses():
     classes = class_repository.getAll()
@@ -54,7 +68,7 @@ def __loadCourses():
     coursesOC = []
     for course in courses:
         assingmenta = list(e for e in assingments if e.code  == course.code)
-        auxCourse = CourseOP(name=course.name,code=str(course.code),semester=int(course.semester),no_periods=int(course.no_periods))
+        auxCourse = CourseOP(name=course.name,code=str(course.code),semester=int(course.semester),no_periods=int(course.no_periods),mandatory=course.mandatory)
         if len(assingmenta)>0:
             assingment = assingmenta[0]
             auxCourse.no_students = assingment.no_students

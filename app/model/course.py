@@ -9,7 +9,7 @@ class Course(db.Model):
     area_id = db.Column(db.BIGINT,  db.ForeignKey('area.id')) 
     semester = db.Column(db.Integer,  nullable=True) 
     no_periods = db.Column(db.Integer,  nullable=True) 
-
+    mandatory = db.Column(db.Boolean, default=False)
     course_schedule = db.relationship('CourseSchedule', back_populates='course')
     course_teacher = db.relationship('CourseTeacher', back_populates='course')
 
@@ -50,6 +50,7 @@ class CourseOP(db.Model):
     semester = db.Column(db.Integer,  nullable=True) 
     no_periods = db.Column(db.Integer,  nullable=True) 
     no_students = db.Column(db.Integer,  nullable=True) 
+    mandatory = db.Column(db.Boolean, default=False)
     schedule_id = db.Column(db.BIGINT,  db.ForeignKey('schedule.id'))
 
     course_schedule = db.relationship('CourseScheduleOP', back_populates='course')

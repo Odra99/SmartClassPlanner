@@ -30,14 +30,14 @@ def teacherLoad():
         return jsonify(), 200
     return jsonify(), 400
 
-# @bp.route(path+'/area', methods=['POST'])
-# def areaLoad():
-#     if request.method == 'POST':
-#         json = request.json
-#         areaCSV = json.get('areaCSV')
-#         etlArea(areaCSV)
-#         return jsonify(), 200
-#     return jsonify(), 400
+@bp.route(path+'/area', methods=['POST'])
+def areaLoad():
+    if request.method == 'POST':
+        json = request.json
+        areaCSV = json.get('areaCSV')
+        etlArea(areaCSV)
+        return jsonify(), 200
+    return jsonify(), 400
 
 @bp.route(path+'/course', methods=['POST'])
 def courseLoad():
