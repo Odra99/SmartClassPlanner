@@ -7,6 +7,7 @@ from app.repository import *
 pathArea = '/area'
 pathTeacher = '/teacher'
 pathClassroom = '/classroom'
+pathCourse = '/course'
 
 
 @bp.route(pathArea, methods=['GET'])
@@ -43,4 +44,11 @@ def getClassrooms():
     if request.method == 'GET':
         classrooms = class_repository.getAll()
         return jsonify(classrooms), 200
+    return jsonify(), 400
+
+@bp.route(pathCourse, methods=['GET'])
+def getCourses():
+    if request.method == 'GET':
+        courses = course_repository.getAllCourses()
+        return jsonify(courses), 200
     return jsonify(), 400

@@ -1,5 +1,25 @@
-from app.extensions import db
+from app.extensions import db,ma
+from app.model.general import AreaSchema
 
+class CourseSchedule(db.Model):
+    __tablename__="course_schedule"
+    id = db.Column(db.BIGINT, primary_key=True)
+    day = db.Column(db.BIGINT, db.ForeignKey('type.id'))
+    start_time = db.Column(db.TIME, nullable=False)
+    end_time = db.Column(db.TIME, nullable=False)
+    course_id = db.Column(db.BIGINT,  db.ForeignKey('course.id'))
+    area_id = db.Column(db.BIGINT,  db.ForeignKey('area.id'),nullable=True) 
+
+
+    course = db.relationship('Course', back_populates='course_schedule')
+
+class CourseScheduleSchema(ma.Schema):
+    class Meta:
+        model = CourseSchedule
+        fields = ("id", "start_time", "end_time", "area")
+
+    area = ma.Nested(AreaSchema)
+    
 class Course(db.Model):
     __tablename__="course"
     id = db.Column(db.BIGINT, primary_key=True)
@@ -13,17 +33,15 @@ class Course(db.Model):
     course_schedule = db.relationship('CourseSchedule', back_populates='course')
     course_teacher = db.relationship('CourseTeacher', back_populates='course')
 
-class CourseSchedule(db.Model):
-    __tablename__="course_schedule"
-    id = db.Column(db.BIGINT, primary_key=True)
-    day = db.Column(db.BIGINT, db.ForeignKey('type.id'))
-    start_time = db.Column(db.TIME, nullable=False)
-    end_time = db.Column(db.TIME, nullable=False)
-    course_id = db.Column(db.BIGINT,  db.ForeignKey('course.id'))
-    area_id = db.Column(db.BIGINT,  db.ForeignKey('area.id'),nullable=True) 
+class CourseSchema(ma.Schema):
+    class Meta:
+        model = Course
+        fields = ("id", "name", "code","semester","no_periods","mandatory", "course_schedule")
+    course_schedule = ma.List(ma.Nested(CourseScheduleSchema))
 
 
-    course = db.relationship('Course', back_populates='course_schedule')
+course_schema = CourseSchema()
+courses_schema = CourseSchema(many=True)
 
 class CourseTeacher(db.Model):
     __tablename__="course_teacher"
