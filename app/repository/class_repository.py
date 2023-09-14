@@ -1,6 +1,7 @@
 from app.extensions import db
-from app.model.classE import *
+from app.model.classE import Class, classes_schema
 
 
 def getAll():
-    return db.session.query(Class).options(db.joinedload(Class.class_schedule)).all()
+    classes = db.session.query(Class).options(db.joinedload(Class.class_schedule)).all()
+    return classes_schema.dump(classes)

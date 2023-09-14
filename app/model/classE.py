@@ -1,29 +1,49 @@
-from app.extensions import db
+from app.extensions import db, ma
+from app.model.general import AreaSchema
+
+
+class ClassSchedule(db.Model):
+    __tablename__ = "class_schedule"
+    id = db.Column(db.BIGINT, primary_key=True)
+    day = db.Column(db.BIGINT, db.ForeignKey('type.id'), nullable=True)
+    start_time = db.Column(db.TIME, nullable=False)
+    end_time = db.Column(db.TIME, nullable=False)
+    class_id = db.Column(db.BIGINT, db.ForeignKey('class.id'))
+    area_id = db.Column(db.BIGINT,  db.ForeignKey('area.id'))
+
+    classE = db.relationship('Class', back_populates='class_schedule')
+
+
+class ClassScheduleSchema(ma.Schema):
+    class Meta:
+        model = ClassSchedule
+        fields = ("id", "start_time", "end_time", "area")
+
+    area = ma.Nested(AreaSchema)
+
 
 class Class(db.Model):
-    __tablename__="class"
+    __tablename__ = "class"
     id = db.Column(db.BIGINT, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
     space_capacity = db.Column(db.Integer, nullable=False)
 
-
     class_schedule = db.relationship('ClassSchedule', back_populates='classE')
-    
-
-class ClassSchedule(db.Model):
-    __tablename__="class_schedule"
-    id = db.Column(db.BIGINT, primary_key=True)
-    day = db.Column(db.BIGINT, db.ForeignKey('type.id'),nullable=True)
-    start_time = db.Column(db.TIME, nullable=False)
-    end_time = db.Column(db.TIME, nullable=False)
-    class_id = db.Column(db.BIGINT, db.ForeignKey('class.id'))
-    area_id = db.Column(db.BIGINT,  db.ForeignKey('area.id')) 
 
 
-    classE = db.relationship('Class', back_populates='class_schedule')
+class ClassSchema(ma.Schema):
+    class Meta:
+        model = Class
+        fields = ("id", "name", "space_capacity", "class_schedule")
+    class_schedule = ma.List(ma.Nested(ClassScheduleSchema))
+
+
+class_schema = ClassSchema()
+classes_schema = ClassSchema(many=True)
+
 
 class ClassOP(db.Model):
-    __tablename__="class_oc"
+    __tablename__ = "class_oc"
     id = db.Column(db.BIGINT, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
     space_capacity = db.Column(db.Integer, nullable=False)
@@ -31,21 +51,19 @@ class ClassOP(db.Model):
 
     schedule_id = db.Column(db.BIGINT,  db.ForeignKey('schedule.id'))
 
-    class_schedule = db.relationship('ClassScheduleOP', back_populates='classE')
-    schedule = db.relationship('Schedule', back_populates='classes_configurations')
-    
+    class_schedule = db.relationship(
+        'ClassScheduleOP', back_populates='classE')
+    schedule = db.relationship(
+        'Schedule', back_populates='classes_configurations')
+
+
 class ClassScheduleOP(db.Model):
-    __tablename__="class_schedule_oc"
+    __tablename__ = "class_schedule_oc"
     id = db.Column(db.BIGINT, primary_key=True)
-    day = db.Column(db.BIGINT, db.ForeignKey('type.id'),nullable=True)
+    day = db.Column(db.BIGINT, db.ForeignKey('type.id'), nullable=True)
     start_time = db.Column(db.TIME, nullable=False)
     end_time = db.Column(db.TIME, nullable=False)
     class_id = db.Column(db.BIGINT, db.ForeignKey('class_oc.id'))
-    area_id = db.Column(db.BIGINT,  db.ForeignKey('area_oc.id')) 
-
+    area_id = db.Column(db.BIGINT,  db.ForeignKey('area_oc.id'))
 
     classE = db.relationship('ClassOP', back_populates='class_schedule')
-
-
-
-
