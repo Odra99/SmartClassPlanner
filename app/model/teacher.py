@@ -1,13 +1,5 @@
-from app.extensions import db
-
-class Teacher(db.Model):
-    __tablename__="teacher"
-    id = db.Column(db.BIGINT, primary_key=True)
-    name = db.Column(db.String(200), nullable=False)
-    teacher_schedule = db.relationship('TeacherSchedule', back_populates='teacher')
-    courses = db.relationship('CourseTeacher', back_populates='teacher')
-    
-
+from app.extensions import db,ma
+from app.model.general import AreaSchema
 class TeacherSchedule(db.Model):
     __tablename__="teacher_schedule"
     id = db.Column(db.BIGINT, primary_key=True)
@@ -19,6 +11,36 @@ class TeacherSchedule(db.Model):
 
 
     teacher = db.relationship('Teacher', back_populates='teacher_schedule')
+    area = db.relationship('Area')
+
+class TeacherScheduleSchema(ma.Schema):
+    class Meta:
+        model=TeacherSchedule
+        fields = ("id", "start_time","end_time","area")
+
+    area=ma.Nested(AreaSchema) 
+
+
+teacher_schedule_schema = TeacherScheduleSchema()
+teacher_schedules_schema = TeacherScheduleSchema(many=True)
+
+class Teacher(db.Model):
+    __tablename__="teacher"
+    id = db.Column(db.BIGINT, primary_key=True)
+    name = db.Column(db.String(200), nullable=False)
+    teacher_schedule = db.relationship('TeacherSchedule', back_populates='teacher')
+    courses = db.relationship('CourseTeacher', back_populates='teacher')
+
+class TeacherSchema(ma.Schema):
+    class Meta:
+        model=Teacher
+        fields = ("id", "name","teacher_schedule")
+    teacher_schedule=ma.List(ma.Nested(TeacherScheduleSchema))    
+
+teacher_schema = TeacherSchema()
+teachers_schema = TeacherSchema(many=True)
+
+
 
 
 class TeacherOP(db.Model):

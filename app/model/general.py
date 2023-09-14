@@ -25,10 +25,7 @@ class Area(db.Model):
 
 class AreaSchema(ma.Schema):
     class Meta:
-        # Fields to expose
         fields = ("id", "name", "color")
-
-    # Smart hyperlinking
     _links = ma.Hyperlinks(
         {
             "self": ma.URLFor("area_detail", values=dict(id="<id>")),

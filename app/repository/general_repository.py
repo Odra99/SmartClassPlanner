@@ -12,3 +12,6 @@ def getAllRestrictions():
 
 def getAllPriorityCriteria():
     return db.session.query(PriorityCriteria).all()
+
+def getAreaId(id):
+    return db.session.query(Area).filter_by(id=id).first()
