@@ -8,7 +8,7 @@ from app.ETL.courseETL import *
 path = "/etl"
 
 @bp.route(path+'/loadData', methods=['POST'])
-def classLoad():
+def loadData():
     if request.method == 'POST':
         json = request.json
         areaCSV = json.get('areaCSV')
@@ -24,7 +24,7 @@ def classLoad():
         teacherCSV = json.get('teacherCSV')
         teacherScheduleCSV = json.get('teacherScheduleCSV')
         teacherCourseCSV = json.get('teacherCourseCSV')
-        etlTeacher(teacherCSV, teacherScheduleCSV,teacherCourseCSV)
+        etlTeacher(teacherCSV, teacherScheduleCSV,teacherCourseCSV,areas)
         return jsonify(), 200
     return jsonify(), 400
 

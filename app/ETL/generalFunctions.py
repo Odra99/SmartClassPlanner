@@ -1,5 +1,5 @@
 import pandas as pd
-from extensions import db
+from app.extensions import db
 from sqlalchemy import text
 
 def getDataFrame(url):

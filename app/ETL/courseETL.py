@@ -10,7 +10,7 @@ def etlCourse(urlCourse,urlCourseSchedule,areas):
         schedule = __etlCourseSchedule(dfCourseSchedule,dfCourse.iloc[i]['code'])
         area = searchAreaByName(areas,dfCourse.iloc[i]['area_name'])
         if(area is not None):
-            aux = Course(name=dfCourse.iloc[i]['name'],code=str(dfCourse.iloc[i]['code']),semester=int(dfCourse.iloc[i]['semester']),area_id=area.id,no_periods=int(dfCourse.iloc[i]['no_periods']))
+            aux = Course(name=dfCourse.iloc[i]['name'],code=str(dfCourse.iloc[i]['code']),semester=int(dfCourse.iloc[i]['semester']), mandatory=bool(dfCourse.iloc[i]['mandatory']),area_id=area.id,no_periods=int(dfCourse.iloc[i]['no_periods']))
             aux.course_schedule = schedule
             db.session.add(aux)
     db.session.commit()

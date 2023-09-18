@@ -1,0 +1,123 @@
+code,name,aux_id,priority,area_name
+28,Social Humanistica 1,11,1,Area comun
+28,Social Humanistica 1,12,2,Area comun
+169,Matematica Basica 1,21,1,Area comun
+169,Matematica Basica 1,26,2,Area comun
+169,Matematica Basica 1,23,3,Area comun
+169,Matematica Basica 1,16,4,Area comun
+2666,Orientacion y Liderezgo,27,1,Area comun
+2666,Orientacion y Liderezgo,10,2,Area comun
+119,Tecnica complementaria,17,1,Area comun
+119,Tecnica complementaria,16,2,Area comun
+177,Deportes 1,24,1,Area comun
+216,Quimica 1,25,1,Area comun
+216,Quimica 1,17,2,Area comun
+216,Quimica 1,37,3,Area comun
+29,Social Humanistica 2,12,1,Area comun
+170,Matematica Basica 2,23,1,Area comun
+170,Matematica Basica 2,14,2,Area comun
+170,Matematica Basica 2,29,3,Ing. Civil
+2667,Tecnicas de investigacion y estudio,37,1,Area comun
+2667,Tecnicas de investigacion y estudio,32,2,Ing. Mecanica Industrial
+2667,Tecnicas de investigacion y estudio,17,3,Area comun
+72,Fisica Basica,18,1,Area comun
+72,Fisica Basica,14,2,Area comun
+72,Fisica Basica,13,3,Area comun
+72,Fisica Basica,4,4,Area comun
+178,Deportes 2,24,1,Area comun
+290,Matematica Intermedia 1,30,1,Area comun
+290,Matematica Intermedia 1,29,2,Area comun
+146,Fisica 1,18,1,Area comun
+146,Fisica 1,15,2,Area comun
+2797,Logica de sistemas,1,1,Ing. Ciencias y Sistemas
+2795,Matematica de computo 1,4,1,Ing. Ciencias y Sistemas
+2796,Introduccion a la programacion y computacion 1,3,1,Ing. Ciencias y Sistemas
+949,Estadistica 1,7,1,Ing. Ciencias y Sistemas
+949,Estadistica 1,33,2,Ing. Industrial
+2798,Lenguajes Formales y de Programacion,10,1,Ing. Ciencias y Sistemas
+2799,Matematica de computo 2,4,1,Ing. Ciencias y Sistemas
+2800,Introduccion a la programacion y computacion 2,3,1,Ing. Ciencias y Sistemas
+85,Logica,11,1,Area comun
+291,Matematica Intermedia 2,30,1,Area comun
+291,Matematica Intermedia 2,18,1,Area comun
+292,Matematica Intermedia 3,32,1,Ing. Ciencias y Sistemas
+147,Fisica 2,18,1,Area comun
+2802,Analisis Probabilistico,47,1,Ing. Ciencias y Sistemas
+2803,Organizacion de Lenguajes y compiladores 1,3,1,Ing. Ciencias y Sistemas
+2804,Organizacion computacional,4,1,Ing. Ciencias y Sistemas
+2805,Estructura de datos,10,1,Ing. Ciencias y Sistemas
+77,Filosofia de la ciencia,11,1,Area comun
+674,Matematica aplicada 3,31,1,Area comun
+673,Matematica aplicada 1,31,1,Area comun
+694,Contabilidad 1,34,1,Ing. Industrial
+2806,Principios de metrologia,9,1,Ing. Civil
+94,Ecologia,41,1,Ing. Industrial
+2807,Practica inicial TI,10,1,Ing. Industrial
+2808,Teoria de sistemas 1,2,1,Ing. Ciencias y Sistemas
+685,Investigacion de operaciones 1,7,1,Ing. Industrial
+2809,Economia,47,1,Area comun
+2810,Organizacion de lenguajes y compiladores 2,3,1,Ing. Ciencias y Sistemas
+2811,Arquitectura de computadores y ensambladores 1,4,1,Ing. Industrial
+2812,Manejo e implementacion de archivos,10,1,Area comun
+670,Ingenieria electrica 1,32,1,Ing. Ciencias y Sistemas
+779,Contabilidad 2,8,1,Ing. Industrial
+2670,Gestion de desastres,44,1,Ing. Industrial
+2813,Teoria de sistemas 2,5,1,Ing. Ciencias y Sistemas
+795,Investigacion de operaciones 2,6,1,Ing. Industrial
+950,Estadistica 2,7,1,Ing. Industrial
+2814,Sistemas operativos 1,5,1,Ing. Ciencias y Sistemas
+2815,Arquitectura de computadores y ensambladores 2,4,1,Ing. Ciencias y Sistemas
+2816,Redes de computadoras 1,1,1,Ing. Ciencias y Sistemas
+2817,Sistemas de bases de datos 1,2,1,Ing. Ciencias y Sistemas
+943,Administracion de empresas 1,34,1,Ing. Industrial
+919,Contabilidad 3,8,1,Ing. Industrial
+2818,Practica intermedia TI,10,1,Ing. Ciencias y Sistemas
+2819,Sistemas operativos 2,5,1,Ing. Ciencias y Sistemas
+2820,Redes de computadoras 2,1,1,Ing. Ciencias y Sistemas
+2821,Sistemas de Bases de datos 2,2,1,Ing. Ciencias y Sistemas
+2822,Analisis y diseo de sistemas 1,3,1,Ing. Ciencias y Sistemas
+2823,Seminario de sistemas 1,2,1,Ing. Ciencias y Sistemas
+690,Ingenieria economica 1,47,1,Ing. Industrial
+2824,Modelacion y simulacion 1,2,1,Ing. Ciencias y Sistemas
+2825,Sistemas organizacionales y gerenciales 1,5,1,Ing. Ciencias y Sistemas
+2830,Emprendedores de negocios informaticos,5,1,Ing. Ciencias y Sistemas
+2826,Inteligencia artificial 1,10,1,Ing. Ciencias y Sistemas
+2831,Seguridad y auditorias de redes,1,1,Ing. Ciencias y Sistemas
+2827,Analisis y diseo de sistemas 2,3,1,Ing. Ciencias y Sistemas
+2832,Sistemas aplicados 1,3,1,Ing. Ciencias y Sistemas
+2833,Bases de datos avanzadas,2,1,Ing. Ciencias y Sistemas
+2828,Seminario de Sistemas 2,2,1,Ing. Ciencias y Sistemas
+2672,Introduccion a la evaluacion de impacto ambiental,44,1,Ing. Industrial
+922,Ingenieria economica 2,7,1,Ing. Industrial
+2570,Etica profesional,11,1,Ing. Industrial
+2829,Practica final,3,1,Ing. Industrial
+2837,Seminario de investigacion,2,1,Ing. Ciencias y Sistemas
+909,Preparacion y evaluacion de proyectos 1,9,1,Ing. Industrial
+912,Planeamiento,9,1,Ing. Industrial
+2842,Seminario de investigacion de EPS,3,1,Ing. Industrial
+2841,Auditoria de proyectos de software,3,1,Ing. Ciencias y Sistemas
+2840,Sistemas aplicados 2,3,1,Ing. Ciencias y Sistemas
+2836,Software avanzado,3,1,Ing. Ciencias y Sistemas
+2834,Sistemas organizacionales y gerenciales 2,5,1,Ing. Ciencias y Sistemas
+2835,Modelacion y simulacion 2,2,1,Ing. Ciencias y Sistemas
+2838,Inteligencia artificial 2,10,1,Ing. Ciencias y Sistemas
+2839,Redes de nueva generacion,1,1,Ing. Ciencias y Sistemas
+684,Termodinamica,16,1,Ing. Mecanica
+794,Legislacion 2,46,1,Ing. Industrial
+952,Ingenieria de plantas,42,1,Ing. Industrial
+2585,Practica Intermedia,34,1,Ing. Mecanica
+954,Ingenieria de metodos,9,1,Ing. Industrial
+796,Microeconomia,8,1,Ing. Industrial
+793,Mercadotecnia 1,44,1,Ing. Civil
+778,Programacion comercial,43,1,Ing. Civil
+695,Plantas de vapor,41,1,Ing. Industrial
+921,Econometria,45,1,Ing. Mecanica
+925,Psicologia Industrial,11,1,Ing. Industrial
+941,Analisis de sistemas industriales,41,1,Ing. Industrial
+2740,Practica final,15,1,Ing. Mecanica
+744,Montaje y mantenimiento de equipo,42,1,Ing. Mecanica Industrial
+944,Administracion de empresas 2,34,1,Ing. Industrial
+928,Administracion de personal,11,1,Ing. Civil
+797,Mercadotecnia 2,44,1,Ing. Civil
+916,Seguridad e higiene industrial,44,1,Ing. Industrial
+918,Preparacion y evaluacion de proyectos 2,9,1,Ing. Industrial

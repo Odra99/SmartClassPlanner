@@ -1,0 +1,149 @@
+code,name,area_name,semester,no_periods,mandatory
+28,Social Humanistica 1,Area comun,1,1,1
+169,Matematica Basica 1,Area comun,1,2,1
+2666,Orientacion y Liderezgo,Area comun,1,1,1
+119,Tecnica complementaria,Area comun,1,1,1
+177,Deportes 1,Area comun,1,1,0
+216,Quimica 1,Area comun,1,1,1
+2792,Idioma tecnico 1,Area comun,1,1,0
+29,Social Humanistica 2,Area comun,2,1,1
+170,Matematica Basica 2,Area comun,2,2,1
+2667,Tecnicas de investigacion y estudio,Area comun,2,1,1
+72,Fisica Basica,Area comun,2,1,1
+178,Deportes 2,Area comun,2,1,0
+2793,Idioma tecnico 2,Area comun,2,1,0
+290,Matematica Intermedia 1,Area comun,3,2,1
+146,Fisica 1,Area comun,3,1,1
+2794,Idioma tecnico 3,Area comun,3,1,0
+2797,Logica de sistemas,Ing. Ciencias y Sistemas,3,1,1
+2795,Matematica de computo 1,Ing. Ciencias y Sistemas,3,1,1
+2796,Introduccion a la programacion y computacion 1,Ing. Ciencias y Sistemas,3,1,1
+949,Estadistica 1,Area comun,4,1,1
+2798,Lenguajes Formales y de Programacion,Ing. Ciencias y Sistemas,4,1,1
+2799,Matematica de computo 2,Ing. Ciencias y Sistemas,4,1,1
+2800,Introduccion a la programacion y computacion 2,Ing. Ciencias y Sistemas,4,1,1
+85,Logica,Area comun,4,1,1
+291,Matematica Intermedia 2,Ing. Ciencias y Sistemas,4,1,1
+292,Matematica Intermedia 3,Ing. Ciencias y Sistemas,4,1,1
+147,Fisica 2,Area comun,4,1,1
+2801,Idioma tecnico 4,Area comun,4,1,0
+2802,Analisis Probabilistico,Ing. Ciencias y Sistemas,5,1,1
+2803,Organizacion de Lenguajes y compiladores 1,Ing. Ciencias y Sistemas,5,1,1
+2804,Organizacion computacional,Ing. Ciencias y Sistemas,5,1,1
+2805,Estructura de datos,Ing. Ciencias y Sistemas,5,1,1
+77,Filosofia de la ciencia,Area comun,5,1,0
+674,Matematica aplicada 3,Area comun,5,1,1
+673,Matematica aplicada 1,Area comun,5,1,1
+694,Contabilidad 1,Area comun,5,1,1
+2806,Principios de metrologia,Area comun,5,1,0
+94,Ecologia,Area comun,5,1,0
+2807,Practica inicial TI,Ing. Ciencias y Sistemas,5,1,1
+2808,Teoria de sistemas 1,Ing. Ciencias y Sistemas,6,1,1
+685,Investigacion de operaciones 1,Ing. Ciencias y Sistemas,6,1,1
+2809,Economia,Ing. Ciencias y Sistemas,6,1,1
+2810,Organizacion de lenguajes y compiladores 2,Ing. Ciencias y Sistemas,6,1,1
+2811,Arquitectura de computadores y ensambladores 1,Ing. Ciencias y Sistemas,6,1,1
+2812,Manejo e implementacion de archivos,Ing. Ciencias y Sistemas,6,1,1
+905,Matematica aplicada 4,Area comun,6,1,0
+904,matematica aplicada 2,Area comun,6,1,0
+670,Ingenieria electrica 1,Area comun,6,1,0
+779,Contabilidad 2,Area comun,6,1,0
+2670,Gestion de desastres,Area comun,6,1,0
+2813,Teoria de sistemas 2,Ing. Ciencias y Sistemas,7,1,0
+795,Investigacion de operaciones 2,Ing. Ciencias y Sistemas,7,1,1
+950,Estadistica 2,Ing. Ciencias y Sistemas,7,1,1
+2814,Sistemas operativos 1,Ing. Ciencias y Sistemas,7,1,1
+2815,Arquitectura de computadores y ensambladores 2,Ing. Ciencias y Sistemas,7,1,1
+2816,Redes de computadoras 1,Ing. Ciencias y Sistemas,7,1,1
+2817,Sistemas de bases de datos 1,Ing. Ciencias y Sistemas,7,1,1
+943,Administracion de empresas 1,Ing. Ciencias y Sistemas,7,1,1
+919,Contabilidad 3,Ing. Industrial,7,1,0
+2818,Practica intermedia TI,Ing. Ciencias y Sistemas,7,1,1
+2819,Sistemas operativos 2,Ing. Ciencias y Sistemas,8,1,1
+2820,Redes de computadoras 2,Ing. Ciencias y Sistemas,8,1,1
+2821,Sistemas de Bases de datos 2,Ing. Ciencias y Sistemas,8,1,0
+2822,Analisis y dise;o de sistemas 1,Ing. Ciencias y Sistemas,8,1,1
+2823,Seminario de sistemas 1,Ing. Ciencias y Sistemas,8,1,0
+690,Ingenieria economica 1,Ing. Industrial,8,1,1
+2824,Modelacion y simulacion 1,Ing. Ciencias y Sistemas,9,1,1
+2825,Sistemas organizacionales y gerenciales 1,Ing. Ciencias y Sistemas,9,1,1
+2830,Emprendedores de negocios informaticos,Ing. Ciencias y Sistemas,9,1,1
+2826,Inteligencia artificial 1,Ing. Ciencias y Sistemas,9,1,1
+2831,Seguridad y auditorias de redes,Ing. Ciencias y Sistemas,9,1,0
+2827,Analisis y dise;o de sistemas 2,Ing. Ciencias y Sistemas,9,1,1
+2832,Sistemas aplicados 1,Ing. Ciencias y Sistemas,9,1,1
+2833,Bases de datos avanzadas,Ing. Ciencias y Sistemas,9,1,1
+2828,Seminario de Sistemas 2,Ing. Ciencias y Sistemas,9,1,1
+2672,Introduccion a la evaluacion de impacto ambiental,Ing. Industrial,9,1,1
+922,Ingenieria economica 2,Ing. Industrial,9,1,0
+2570,Etica profesional,Ing. Industrial,9,1,0
+2829,Practica final,Ing. Ciencias y Sistemas,9,1,0
+2837,Seminario de investigacion,Ing. Ciencias y Sistemas,10,1,0
+909,Preparacion y evaluacion de proyectos 1,Ing. Industrial,10,1,1
+912,Planeamiento,Ing. Industrial,10,1,1
+2842,Seminario de investigacion de EPS,Ing. Ciencias y Sistemas,10,1,1
+2841,Auditoria de proyectos de software,Ing. Ciencias y Sistemas,10,1,0
+2840,Sistemas aplicados 2,Ing. Ciencias y Sistemas,10,1,1
+2836,Software avanzado,Ing. Ciencias y Sistemas,10,1,0
+2834,Sistemas organizacionales y gerenciales 2,Ing. Ciencias y Sistemas,10,1,1
+2835,Modelacion y simulacion 2,Ing. Ciencias y Sistemas,10,1,0
+2838,Inteligencia artificial 2,Ing. Ciencias y Sistemas,10,1,1
+2839,Redes de nueva generacion,Ing. Ciencias y Sistemas,10,1,0
+217,Quimica 2,Area comun,3,1,0
+77,Filosofia de la ciencia,Area comun,3,1,1
+109,Mecanica Analitica 1,Ing. Civil,4,1,0
+68,Dibujo tecnico mecanico,Ing. Mecanica,4,1,1
+524,Introduccion a proyectos gerenciales,Ing. Industrial,4,1,1
+118,Mecanica Analitica 2,Ing. Mecanica,5,1,0
+671,Mecanica de Fluidos,Ing. Mecanica,5,1,0
+927,Introduccion a la ingenieria petrolera,Ing. Civil,5,1,1
+2669,Principios de metrologia,Ing. Civil,5,1,1
+672,Resistencia de materiales 1,Ing. Civil,5,1,0
+680,Legislacion 1,Ing. Industrial,5,1,1
+684,Termodinamica,Ing. Mecanica,6,1,0
+677,Resistencia de materiales 2,Ing. Civil,6,1,0
+676,Ingenieria electrica 2,Ing. Mecanica,6,1,1
+678,Ciencia de los materiales,Ing. Civil,6,1,1
+950,Estadistica 2,Ing. Industrial,6,1,1
+690,Ingenieria economica 1,Ing. Industrial,6,1,1
+794,Legislacion 2,Ing. Industrial,6,1,0
+87,Programacion de computadoras 1,Ing. Industrial,6,1,0
+688,Termodinamica 2,Ing. Ciencias y Sistemas,7,1,0
+682,Metalurgia y metalografia,Ing. Civil,7,1,1
+687,Procesos de manufactura 1,Ing. Industrial,7,1,1
+952,Ingenieria de plantas,Ing. Industrial,7,1,0
+685,Investigacion de operaciones 1,Ing. Industrial,7,1,0
+922,Ingenieria Economica 2,Ing. Industrial,7,1,1
+2809,Economia,Ing. Industrial,7,1,1
+794,Programacion de computadoras 2,Ing. Industrial,7,1,0
+2585,Practica Intermedia,Ing. Industrial,7,1,1
+94,Ecologia,Ing. Industrial,7,1,0
+696,Motores de combustion interna,Ing. Mecanica,8,1,1
+683,Dise;o de maquinas 1,Ing. Mecanica,8,1,0
+698,Procesos de manufactura 2,Ing. Industrial,8,1,0
+954,Ingenieria de metodos,Ing. Industrial,8,1,1
+795,Investigacion de operaciones 2,Ing. Industrial,8,1,1
+796,Microeconomia,Ing. Industrial,8,1,0
+793,Mercadotecnia 1,Ing. Industrial,8,1,0
+778,Programacion comercial,Ing. Industrial,8,1,1
+695,Plantas de vapor,Ing. Mecanica,9,1,0
+931,Controles industriales,Ing. Industrial,9,1,1
+907,Dise;o de la produccion,Ing. Industrial,9,1,0
+921,Econometria,Ing. Industrial,9,1,0
+939,Economia industrial,Ing. Industrial,9,1,0
+943,Administracion de empresas 1,Ing. Industrial,9,1,1
+925,Psicologia Industrial,Ing. Industrial,9,1,0
+941,Analisis de sistemas industriales,Ing. Industrial,9,1,0
+909,Preparacion y evaluacion de proyectos 1,Ing. Industrial,9,1,0
+2740,Practica final,Ing. Industrial,9,1,1
+2672,Introduccion a la evaluacion de impacto ambiental,Ing. Industrial,9,1,0
+2671,Gestion de desastres,Ing. Industrial,9,1,1
+2570,Etica profesional,Ing. Industrial,10,1,1
+744,Montaje y mantenimiento de equipo,Ing. Mecanica,10,1,0
+910,Control de la produccion,Ing. Industrial,10,1,1
+937,Ingenieria textil 1,Ing. Industrial,10,1,0
+944,Administracion de empresas 2,Ing. Industrial,10,1,1
+928,Administracion de personal,Ing. Industrial,10,1,0
+797,Mercadotecnia 2,Ing. Industrial,10,1,1
+916,Seguridad e higiene industrial,Ing. Industrial,10,1,1
+918,Preparacion y evaluacion de proyectos 2,Ing. Industrial,10,1,1
