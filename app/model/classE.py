@@ -12,6 +12,7 @@ class ClassSchedule(db.Model):
     area_id = db.Column(db.BIGINT,  db.ForeignKey('area.id'))
 
     classE = db.relationship('Class', back_populates='class_schedule')
+    area = db.relationship('Area', back_populates='classes_schedule')
 
     area_name=""
 
@@ -22,6 +23,7 @@ class ClassScheduleSchema(ma.Schema):
         fields = ("id", "start_time", "end_time", "area","area_name")
 
     area = ma.Nested(AreaSchema)
+    area_name = ma.Function(lambda area:(area.area.name))
 
 
 class Class(db.Model):
@@ -55,6 +57,7 @@ class ClassScheduleOP(db.Model):
     area_id = db.Column(db.BIGINT,  db.ForeignKey('area_oc.id'))
 
     classE = db.relationship('ClassOP', back_populates='class_schedule')
+    area = db.relationship('AreaOp', back_populates='classes_schedule')
 
     area_name=""
 
@@ -63,7 +66,6 @@ class ClassScheduleOPSchema(ma.Schema):
     class Meta:
         model = ClassScheduleOP
         fields = ("id", "start_time", "end_time", "area","area_name")
-
     area = ma.Nested(AreaOPSchema)
 
 class ClassOP(db.Model):

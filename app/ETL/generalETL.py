@@ -8,7 +8,7 @@ def etlArea(url):
     df = getDataFrame(url)
     areas = []
     for i in range(len(df)):
-        aux = Area(name=df.iloc[i]['name'])
+        aux = Area(name=df.iloc[i]['name'],color=df.iloc[i]['color'])
         
         db.session.add(aux)
         areas.append(aux)

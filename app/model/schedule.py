@@ -77,6 +77,7 @@ class Schedule(db.Model):
     assignments = db.relationship('Assignment', back_populates='schedule')
     status = db.Column(db.BIGINT, db.ForeignKey('type.id'))
     version = db.Column(db.Integer, nullable=False)
+    efficiency = db.Column(db.Float,default=0)
 
     matrixAssingments = []
     
@@ -85,7 +86,7 @@ class Schedule(db.Model):
 class ScheduleSchema(ma.Schema):
     class Meta:
         model=Schedule
-        fields = ("id", "name","courses","teachers","classes_configurations","assignments","status","version","date","parent_id","restrictions","matrixAssingments","areas","priority_criterias","area_configurations","course_assignment")
+        fields = ("id", "name","courses","teachers","efficiency","classes_configurations","assignments","status","version","date","parent_id","restrictions","matrixAssingments","areas","priority_criterias","area_configurations","course_assignment")
         load_instance=True
     courses=fields.Nested(CourseOPSchema, many=True)
     teachers=ma.List(ma.Nested(TeacherOPSchema))

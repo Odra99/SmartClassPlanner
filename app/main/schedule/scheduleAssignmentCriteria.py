@@ -1,4 +1,3 @@
-from operator import itemgetter
 from app.model.schedule import *
 from app.model.assignment import *
 from app.model.teacher import *
@@ -6,20 +5,120 @@ from app.model.classE import *
 from app.model.course import *
 from app.main.schedule.scheduleFunctions import *
 from app.enums import RestrictionEnum, PriorityTypeEnum
-from datetime import datetime, time, timedelta
 
+
+def generateAssignmentsBy(schedule:Schedule):
+    return spaceAvailabilityCriteria(schedule)
 
 def spaceAvailabilityCriteria(schedule: Schedule):
-    classes = __sortClassPriority(schedule)
-    courses = __sortCoursePriority(schedule)
+    __sortClassPriority(schedule)
+    __sortCoursePriority(schedule)
 
+    for priority_criteria in schedule.priority_criterias:
+        if(priority_criteria.type==PriorityTypeEnum.CLASS.value):
+            return classCriteria(schedule)
+        if(priority_criteria.type==PriorityTypeEnum.TEACHER.value):
+            return teacherCriteria(schedule)
+        if(priority_criteria.type==PriorityTypeEnum.COURSE.value):
+            return courseCriteria(schedule)
 
-def teacherAvailabilityCriteria(schedule: Schedule):
+def courseCriteria(schedule: Schedule):
     classes = schedule.classes_configurations
     db.session.autoflush = False
     assignments = []
-    # period_duration_str = searchRestriction(schedule.restrictions, RestrictionEnum.PERIODS_DURATION)
-    period_duration = transformTimeDelta(str("00:50"), '%H:%M')
+    period_duration_str = searchRestriction(schedule.restrictions, RestrictionEnum.PERIODS_DURATION)
+    if(period_duration_str is None):
+        period_duration_str = "00:50"
+    period_duration = transformTimeDelta(str(period_duration_str), '%H:%M')
+   
+    for course in schedule.courses:
+        if __isCourseAssigned(assignments, course):
+            continue
+        for teacher in schedule.teachers:
+            for teacherCourse in teacher.courses:
+                if teacherCourse.course.code == course.code:
+                    for teacherSchedule in teacher.teacher_schedule:
+                        if (teacherSchedule.area_id == course.area_id):
+                            teacherScheduleTime = transformTimeDelta(
+                                str(teacherSchedule.start_time), '%H:%M:%S')
+                            teacherScheduleEndTime = transformTimeDelta(
+                                str(teacherSchedule.end_time), '%H:%M:%S')
+                            notAvailable = False
+                            while not __isTeacherAvailable(assignments, teacher, teacherScheduleTime) and teacherScheduleTime < teacherScheduleEndTime:
+                                teacherScheduleTime = teacherScheduleTime+period_duration
+                            if (teacherScheduleTime >= teacherScheduleEndTime):
+                                notAvailable = True
+                            if not notAvailable:
+                                teacherScheduleEndTime = teacherScheduleTime + \
+                                    (period_duration)
+                                classE = classSpaceCriteria(
+                                    classes, course, assignments, teacherScheduleTime)
+                                if classE is not None:
+                                    assignmentAuxiliar = Assignment(class_id=classE.id, course=course, teacher_id=teacher.id, no_students=10, section="1",
+                                                                    schedule_id=schedule.id, start_time=teacherScheduleTime, end_time=teacherScheduleEndTime)
+                                    assignments.append(assignmentAuxiliar)
+
+                        break
+                    break
+    schedule.assignments = assignments
+    db.session.commit()
+    return schedule 
+
+def classCriteria(schedule: Schedule):
+    db.session.autoflush = False
+    assignments = []
+    period_duration_str = searchRestriction(schedule.restrictions, RestrictionEnum.PERIODS_DURATION)
+    if(period_duration_str is None):
+        period_duration_str = "00:50"
+    period_duration = transformTimeDelta(str(period_duration_str), '%H:%M')
+    
+    for classe in schedule.classes_configurations:
+        for course in schedule.courses:
+            if __isCourseAssigned(assignments, course):
+                continue
+            for teacher in schedule.teachers:
+                for teacherCourse in teacher.courses:
+                    if teacherCourse.course.code == course.code:
+                        for teacherSchedule in teacher.teacher_schedule:
+                            if (teacherSchedule.area_id == course.area_id):
+                                teacherScheduleTime = transformTimeDelta(
+                                    str(teacherSchedule.start_time), '%H:%M:%S')
+                                teacherScheduleEndTime = transformTimeDelta(
+                                    str(teacherSchedule.end_time), '%H:%M:%S')
+                                notAvailable = False
+                                while not __isTeacherAvailable(assignments, teacher, teacherScheduleTime) and teacherScheduleTime < teacherScheduleEndTime:
+                                    teacherScheduleTime = teacherScheduleTime+period_duration
+                                if (teacherScheduleTime >= teacherScheduleEndTime):
+                                    notAvailable = True
+                                if not notAvailable:
+                                    teacherScheduleEndTime = teacherScheduleTime + \
+                                        (period_duration)
+                                    if __isClassAvailable(assignments,classe,teacherScheduleTime):
+                                        classE = None 
+                                        if (course.no_students > classe.space_capacity):
+                                            course.no_students = course.no_students - classe.space_capacity
+                                            classE = classe
+                                        if classE is not None:
+                                            assignmentAuxiliar = Assignment(class_id=classE.id, course=course, teacher_id=teacher.id, no_students=10, section="1",
+                                                                        schedule_id=schedule.id, start_time=teacherScheduleTime, end_time=teacherScheduleEndTime)
+                                            assignments.append(assignmentAuxiliar)
+
+                            break
+                        break
+    schedule.assignments = assignments
+    db.session.commit()
+    return schedule 
+
+
+
+def teacherCriteria(schedule: Schedule):
+    classes = schedule.classes_configurations
+    db.session.autoflush = False
+    assignments = []
+    period_duration_str = searchRestriction(schedule.restrictions, RestrictionEnum.PERIODS_DURATION)
+    if(period_duration_str is None):
+        period_duration_str = "00:50"
+    period_duration = transformTimeDelta(str(period_duration_str), '%H:%M')
     for teacher in schedule.teachers:
         for course in schedule.courses:
             if __isCourseAssigned(assignments, course):
@@ -51,6 +150,7 @@ def teacherAvailabilityCriteria(schedule: Schedule):
                     break
     schedule.assignments = assignments
     db.session.commit()
+    return schedule
 
 
 def classSpaceCriteria(classes: list[ClassOP], course: CourseOP, assignments: list[Assignment], start_time):
@@ -63,28 +163,33 @@ def classSpaceCriteria(classes: list[ClassOP], course: CourseOP, assignments: li
 
 
 def __sortClassPriority(schedule: Schedule):
-    attributes_to_order = ['space_capacity']
     space_capacity_pc = [
-        pc for pc in schedule.priority_criterias if pc.subtype > PriorityTypeEnum.CLASS_SPACE_CAPACITY]
+        pc for pc in schedule.priority_criterias if pc.type == PriorityTypeEnum.CLASS.value]
     if (len(space_capacity_pc)):
-        return __custom_sort(schedule.classes_configurations, itemgetter(*attributes_to_order), reverse=space_capacity_pc[0].asc)
-    return __custom_sort(schedule.classes_configurations, itemgetter(*attributes_to_order))
+        if(space_capacity_pc[0].subtype==PriorityTypeEnum.CLASS_SPACE_CAPACITY.value and len(space_capacity_pc)==1):
+          schedule.classes_configurations.sort(key=lambda x: (x.space_capacity))
 
 
 def __sortCoursePriority(schedule: Schedule):
     course_pc = [
-        pc for pc in schedule.priority_criterias if pc.type > PriorityTypeEnum.COURSE]
+        pc for pc in schedule.priority_criterias if pc.type == PriorityTypeEnum.COURSE.value]
     # Order by subtype
     course_pc = sorted(course_pc, key=lambda pc: pc.order)
     attributes_to_order = []
     for pc in course_pc:
-        if (pc.subtype == PriorityTypeEnum.COURSE_AREA):
-            attributes_to_order.append('area_id')
-        if (pc.subtype == PriorityTypeEnum.COURSE_NO_STUDENTS):
+        if (pc.subtype == PriorityTypeEnum.COURSE_MANDATORY.value):
+            attributes_to_order.append('mandatory')
+        if (pc.subtype == PriorityTypeEnum.COURSE_NO_STUDENTS.value):
             attributes_to_order.append('no_students')
-        if (pc.subtype == PriorityTypeEnum.COURSE_SEMESTER):
+        if (pc.subtype == PriorityTypeEnum.COURSE_SEMESTER.value):
             attributes_to_order.append('semester')
-    return __custom_sort(schedule.courses, itemgetter(*attributes_to_order))
+    
+    if(attributes_to_order[0]=='semester'):
+      schedule.courses.sort(key=lambda x: (x.no_students is None, x.semester,x.mandatory))
+    elif(attributes_to_order[0]=='no_students'):
+      schedule.courses.sort(key=lambda x: (x.no_students is None, x.mandatory,x.semester))
+    elif(attributes_to_order[0]=='mandatory'):
+      schedule.courses.sort(key=lambda x: (x.mandatory is None, x.mandatory,x.semester,))
 
 
 def __areaPriority(schedule: Schedule):
@@ -137,6 +242,4 @@ def __isCourseAssignedForSameAreaAndSemester(assignments: list[Assignment], cour
     return False
 
 
-def __custom_sort(obj, key_func, reverse=False):
-    return sorted(obj, key=key_func, reverse=reverse)
 

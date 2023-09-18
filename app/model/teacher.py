@@ -1,6 +1,6 @@
 from app.extensions import db,ma
 from app.model.general import AreaSchema, AreaOPSchema
-from app.model.course import CourseTeacherOPSchema
+from app.model.course import CourseTeacherOPSchema,CourseTeacherSchema
 class TeacherSchedule(db.Model):
     __tablename__="teacher_schedule"
     id = db.Column(db.BIGINT, primary_key=True)
@@ -13,13 +13,15 @@ class TeacherSchedule(db.Model):
 
     teacher = db.relationship('Teacher', back_populates='teacher_schedule')
     area = db.relationship('Area')
+    area_name=""
 
 class TeacherScheduleSchema(ma.Schema):
     class Meta:
         model=TeacherSchedule
-        fields = ("id", "start_time","end_time","area")
+        fields = ("id", "start_time","end_time","area","area_name")
 
     area=ma.Nested(AreaSchema) 
+    area_name = ma.Function(lambda area:(area.area.name))
 
 
 teacher_schedule_schema = TeacherScheduleSchema()
@@ -35,8 +37,9 @@ class Teacher(db.Model):
 class TeacherSchema(ma.Schema):
     class Meta:
         model=Teacher
-        fields = ("id", "name","teacher_schedule")
-    teacher_schedule=ma.List(ma.Nested(TeacherScheduleSchema))    
+        fields = ("id", "name","teacher_schedule","courses")
+    teacher_schedule=ma.List(ma.Nested(TeacherScheduleSchema))  
+    courses=ma.List(ma.Nested(CourseTeacherSchema))   
 
 teacher_schema = TeacherSchema()
 teachers_schema = TeacherSchema(many=True)
@@ -50,16 +53,16 @@ class TeacherScheduleOP(db.Model):
     end_time = db.Column(db.TIME, nullable=False)
     teacher_id = db.Column(db.BIGINT, db.ForeignKey('teacher_oc.id'))
     area_id = db.Column(db.BIGINT,  db.ForeignKey('area_oc.id')) 
+    area = db.relationship('AreaOp')
 
 
     teacher = db.relationship('TeacherOP', back_populates='teacher_schedule')
-
+    area_name=""
 
 class TeacherScheduleOPSchema(ma.Schema):
     class Meta:
         model=TeacherScheduleOP
-        fields = ("id", "start_time","end_time","area")
-
+        fields = ("id", "start_time","end_time","area","area_name","area_id")
     area=ma.Nested(AreaOPSchema) 
 
 

@@ -1,6 +1,6 @@
 from app.model.schedule import *
 from app.main.schedule.scheduleFunctions import *
-from app.main.schedule.scheduleAssignmentCriteria import *
+from app.main.schedule.scheduleAssignmentCriteria import generateAssignmentsBy
 from app.enums import RestrictionEnum,StatusEnum
 import datetime
 from app.repository import schedule_repository,course_repository
@@ -19,47 +19,16 @@ def scheduleGeneration(schedule_dict):
     schedule.priority_criterias = __loadPriorities(schedule_dict)
     schedule.areas = __loadAreas(schedule_dict)
     schedule.course_assignment = __loadCourseAssignment(schedule_dict)
-    db.session.add(schedule)
     db.session.commit()
     schedule.classes_configurations = __loadClasses(schedule_dict,schedule.areas)
     schedule.courses = __loadCourses(schedule_dict,schedule.areas)
     schedule.teachers = __loadTeacher(schedule.id,schedule_dict,schedule.areas)
-    db.session.add(schedule)
     db.session.commit()
-    
-
-        
-
-def __PeriodsAvailables(schedule:Schedule):
-    start_time = searchRestriction(schedule.restrictions,RestrictionEnum.SCHEDULE_START_TIME)
-    end_time = searchRestriction(schedule.restrictions,RestrictionEnum.SCHEDULE_END_TIME)
-    period_duration =searchRestriction(schedule.restrictions, RestrictionEnum.PERIODS_DURATION)
-
-    if(start_time is None):
-        start_time="07:50:00"
-    if(end_time is None):
-        end_time="21:10:00"
-    if(period_duration is None):
-        period_duration = "00:50"
-    start = transformTimeDelta(start_time)
-    end = transformTimeDelta(end_time)
-    period_duration = transformTimeDelta(period_duration,'%H:%M')
-
-    total_time = end - start
-
-    no_peridos = (total_time / 60 / period_duration)
-
-    classTimes = []
-
-    i = 0
-    
-    while i < no_peridos:
-        aux = start
-        start = start + (period_duration) 
-        i=i+1
-        classTimes.append({"start":str(aux),"end":str(start)})
-    return classTimes
-
+    schedule = generateAssignmentsBy(schedule)
+    schedule.matrixAssingments = matrixGenerator(schedule)
+    schedule.efficiency = len(schedule.classes_configurations)*len(schedule.courses)/(len(schedule.assignments))
+    db.session.commit()
+    return schedule
 
 def __loadClasses(classes_dict,areas):
     classes = classes_dict['classes_configurations']
@@ -138,15 +107,21 @@ def __loadTeacher(scheduleId,schedule_dict,areas):
         auxTeacher = TeacherOP(name=teacher['name'])
         schedules = []
         for teacherSchedule in teacher['teacher_schedule']:
-            aux = TeacherScheduleOP(start_time=teacherSchedule['start_time'],end_time=teacherSchedule['end_time'])
-            schedules.append(aux)
+            area = __searchAreaByName(areas,teacherSchedule['area_name'])
+            if(area is not None):
+                aux = TeacherScheduleOP(start_time=teacherSchedule['start_time'],end_time=teacherSchedule['end_time'],area_id=area.id)
+                schedules.append(aux)
         auxTeacher.teacher_schedule = schedules
         courses = []
         for course in teacher['courses']:
             area = __searchAreaByName(areas,course['area_name'])
-            courseAux = course_repository.getCourseOPByCode(course['code'], scheduleId,area.id)
-            aux = CourseTeacherOP(course_id=courseAux.id,priority=course['priority'], area_id=area.id)
-            courses.append(aux)
+            if area is not None:
+                course2 = course_repository.getCourseOPByid(course['id'])
+                if(course2 is not None):
+                    courseAux = course_repository.getCourseOPByCode(course2.code,scheduleId,area.id)
+                    if(courseAux is not None):
+                        aux = CourseTeacherOP(course_id=courseAux.id,priority=course['priority'], area_id=area.id)
+                        courses.append(aux)
         auxTeacher.courses = courses
         teachersOC.append(auxTeacher)
     return teachersOC

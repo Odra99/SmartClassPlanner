@@ -11,7 +11,7 @@ class PriorityCriteria(db.Model):
 class priorityCriteriaSchema(ma.Schema):
     class Meta:
         model=PriorityCriteria
-        fields = ("id", "description")
+        fields = ("id", "description","type","subtype")
     
 
 priority_criteria_schema = priorityCriteriaSchema()
@@ -30,6 +30,10 @@ class Area(db.Model):
     id = db.Column(db.BIGINT, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     color = db.Column(db.String(150), nullable=True)
+
+    classes_schedule = db.relationship('ClassSchedule', back_populates='area')
+    courses = db.relationship('Course', back_populates='area')
+    area_teachers_course = db.relationship('CourseTeacher', back_populates='area')
 
 
 class AreaSchema(ma.Schema):
@@ -55,6 +59,9 @@ class AreaOp(db.Model):
 
     schedule = db.relationship('Schedule', back_populates='areas')
     schedule_conf = db.relationship('ScheduleAreaConfiguration', back_populates='area')
+    classes_schedule = db.relationship('ClassScheduleOP', back_populates='area')
+    courses = db.relationship('CourseOP', back_populates='area')
+    area_teachers_course = db.relationship('CourseTeacherOP', back_populates='area')
 
 
 class AreaOPSchema(ma.Schema):

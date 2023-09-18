@@ -4,8 +4,7 @@ from flask import (request, jsonify)
 from app.repository import *
 from app.repository.schedule_repository import schedule_schema
 from app.main.schedule.schedule import scheduleGeneration
-from app.model.schedule import Schedule
-from functools import wraps
+from app.enums import StatusEnum
 
 
 pathArea = '/area'
@@ -69,10 +68,24 @@ def getCourses():
         return jsonify(courses), 200
     return jsonify(), 400
 
+@bp.route(pathCourse+"/assignments", methods=['GET'])
+def getAssignments():
+    if request.method == 'GET':
+        courses = course_repository.getAllAssignment()
+        return jsonify(courses), 200
+    return jsonify(), 400
+
 @bp.route(pathSchedule, methods=['GET'])
 def getSchedule():
     if request.method == 'GET':
         schedule = schedule_repository.getInProgressSchedule()
+        return jsonify(schedule_schema.dump(schedule)), 200
+    return jsonify(), 400
+
+@bp.route(pathSchedule+"/<id>", methods=['GET'])
+def getScheduleById(id):
+    if request.method == 'GET':
+        schedule = schedule_repository.getScheduleById(id)
         return jsonify(schedule_schema.dump(schedule)), 200
     return jsonify(), 400
 
@@ -94,7 +107,19 @@ def getPriority():
 def generateSchedule():
     schedule = request.get_json()
     sched = schedule_schema.load(schedule)
-    scheduleGeneration(sched)
+    schedule = scheduleGeneration(sched)
+    return jsonify(schedule_schema.dump(schedule)), 200
 
-    return jsonify(), 200
-
+@bp.route(pathSchedule+"/finished",methods=['PUT'])
+def finishSchedule():
+    if request.method == 'PUT':
+        schedule = schedule_repository.getInProgressSchedule()      
+        if schedule is None:
+            return jsonify(), 404
+        schedules = schedule_repository.getChildSchedules(schedule.id)
+        schedule.status=StatusEnum.FINISHED.value
+        for schedul in schedules:
+            schedul.status=StatusEnum.FINISHED.value  
+        db.session.commit()
+        return jsonify(), 200
+    return jsonify(), 400
