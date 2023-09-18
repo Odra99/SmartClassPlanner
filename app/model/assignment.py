@@ -1,5 +1,7 @@
-from app.extensions import db
-
+from app.extensions import db,ma
+from app.model.course import CourseOPSchema
+from app.model.teacher import TeacherOPSchema
+from app.model.classE import ClassOPSchema
 class Assignment(db.Model):
     __tablename__="assignment"
     id = db.Column(db.BIGINT, primary_key=True)
@@ -15,5 +17,17 @@ class Assignment(db.Model):
 
 
     course = db.relationship('CourseOP', back_populates='assignment')
+    teacher = db.relationship('TeacherOP', back_populates='assignment')
+    classroom = db.relationship('ClassOP', back_populates='assignment')
     schedule = db.relationship('Schedule', back_populates='assignments')
 
+class AssignmentSchema(ma.Schema):
+    class Meta:
+        model=Assignment
+        fields = ("id", "name","course","teacher","classroom","start_time","end_time","no_students","section")
+    course=ma.Nested(CourseOPSchema(exclude=("course_schedule",)))
+    teacher=ma.Nested(TeacherOPSchema(exclude=("teacher_schedule",)))
+    classroom = ma.Nested(ClassOPSchema(exclude=("class_schedule",)))
+
+assignment_op_schema = AssignmentSchema()
+assignments_op_schema = AssignmentSchema(many=True)

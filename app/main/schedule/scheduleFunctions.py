@@ -1,9 +1,9 @@
 from datetime import datetime, timedelta
 
 def searchRestriction(restrictions,id):
-    for i in range(len(restrictions)):
-        if(restrictions.iloc[i]['name']==id):
-            return restrictions.iloc[i]
+    for restriction in restrictions:
+        if(restriction.name==id.name):
+            return restriction.value
         
     return None
 

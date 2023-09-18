@@ -1,5 +1,5 @@
 from app.extensions import db, ma
-from app.model.general import AreaSchema
+from app.model.general import AreaSchema, AreaOPSchema
 
 
 class ClassSchedule(db.Model):
@@ -42,6 +42,26 @@ class_schema = ClassSchema()
 classes_schema = ClassSchema(many=True)
 
 
+
+class ClassScheduleOP(db.Model):
+    __tablename__ = "class_schedule_oc"
+    id = db.Column(db.BIGINT, primary_key=True)
+    day = db.Column(db.BIGINT, db.ForeignKey('type.id'), nullable=True)
+    start_time = db.Column(db.TIME, nullable=False)
+    end_time = db.Column(db.TIME, nullable=False)
+    class_id = db.Column(db.BIGINT, db.ForeignKey('class_oc.id'))
+    area_id = db.Column(db.BIGINT,  db.ForeignKey('area_oc.id'))
+
+    classE = db.relationship('ClassOP', back_populates='class_schedule')
+
+
+class ClassScheduleOPSchema(ma.Schema):
+    class Meta:
+        model = ClassScheduleOP
+        fields = ("id", "start_time", "end_time", "area")
+
+    area = ma.Nested(AreaOPSchema)
+
 class ClassOP(db.Model):
     __tablename__ = "class_oc"
     id = db.Column(db.BIGINT, primary_key=True)
@@ -55,15 +75,16 @@ class ClassOP(db.Model):
         'ClassScheduleOP', back_populates='classE')
     schedule = db.relationship(
         'Schedule', back_populates='classes_configurations')
+    assignment = db.relationship('Assignment', back_populates='classroom')
+    
+class ClassOPSchema(ma.Schema):
+    class Meta:
+        model = ClassOP
+        fields = ("id", "name", "space_capacity", "class_schedule")
+    class_schedule = ma.List(ma.Nested(ClassScheduleOPSchema))
 
 
-class ClassScheduleOP(db.Model):
-    __tablename__ = "class_schedule_oc"
-    id = db.Column(db.BIGINT, primary_key=True)
-    day = db.Column(db.BIGINT, db.ForeignKey('type.id'), nullable=True)
-    start_time = db.Column(db.TIME, nullable=False)
-    end_time = db.Column(db.TIME, nullable=False)
-    class_id = db.Column(db.BIGINT, db.ForeignKey('class_oc.id'))
-    area_id = db.Column(db.BIGINT,  db.ForeignKey('area_oc.id'))
+class_op_schema = ClassOPSchema()
+classes_op_schema = ClassOPSchema(many=True)
 
-    classE = db.relationship('ClassOP', back_populates='class_schedule')
+

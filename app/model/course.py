@@ -1,5 +1,5 @@
 from app.extensions import db,ma
-from app.model.general import AreaSchema
+from app.model.general import AreaSchema, AreaOPSchema
 
 class CourseSchedule(db.Model):
     __tablename__="course_schedule"
@@ -58,6 +58,28 @@ class CourseAssignments(db.Model):
     id = db.Column(db.BIGINT, primary_key=True)
     code = db.Column(db.String(10), nullable=True)
     no_students = db.Column(db.Integer, nullable=False)
+
+
+class CourseScheduleOP(db.Model):
+    __tablename__="course_schedule_oc"
+    id = db.Column(db.BIGINT, primary_key=True)
+    day = db.Column(db.BIGINT, db.ForeignKey('type.id'))
+    start_time = db.Column(db.TIME, nullable=False)
+    end_time = db.Column(db.TIME, nullable=False)
+    course_id = db.Column(db.BIGINT,  db.ForeignKey('course_oc.id'))
+    area_id = db.Column(db.BIGINT,  db.ForeignKey('area_oc.id'),nullable=True) 
+    
+
+    course = db.relationship('CourseOP', back_populates='course_schedule')
+
+class CourseScheduleOPSchema(ma.Schema):
+    class Meta:
+        model = CourseScheduleOP
+        fields = ("id", "start_time", "end_time", "area")
+
+    area = ma.Nested(AreaOPSchema)
+
+
 class CourseOP(db.Model):
     __tablename__="course_oc"
     id = db.Column(db.BIGINT, primary_key=True)
@@ -77,18 +99,16 @@ class CourseOP(db.Model):
     course_teachers = db.relationship('CourseTeacherOP', back_populates='course')
 
     assigned = False
-class CourseScheduleOP(db.Model):
-    __tablename__="course_schedule_oc"
-    id = db.Column(db.BIGINT, primary_key=True)
-    day = db.Column(db.BIGINT, db.ForeignKey('type.id'))
-    start_time = db.Column(db.TIME, nullable=False)
-    end_time = db.Column(db.TIME, nullable=False)
-    course_id = db.Column(db.BIGINT,  db.ForeignKey('course_oc.id'))
-    
 
-    course = db.relationship('CourseOP', back_populates='course_schedule')
+class CourseOPSchema(ma.Schema):
+    class Meta:
+        model = CourseOP
+        fields = ("id", "name", "code","semester","no_periods","mandatory", "course_schedule")
+    course_schedule = ma.List(ma.Nested(CourseScheduleOPSchema))
 
 
+course_op_schema = CourseOPSchema()
+courses_op_schema = CourseOPSchema(many=True)
 
 class CourseTeacherOP(db.Model):
     __tablename__="course_teacher_oc"

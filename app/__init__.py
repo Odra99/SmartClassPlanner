@@ -13,6 +13,7 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     CORS(app)
     app.config.from_object(config_class)
+    app.json.sort_keys=False
 
     db.init_app(app)
     ma.init_app(app)

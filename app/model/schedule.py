@@ -1,5 +1,24 @@
-from app.extensions import db
+from app.extensions import db,ma
+from app.model.course import CourseOPSchema
+from app.model.teacher import TeacherOPSchema
+from app.model.classE import ClassOPSchema
+from app.model.assignment import AssignmentSchema
 
+
+class ScheduleRestrictions(db.Model):
+    __tablename__="schedule_restriction"
+    id = db.Column(db.BIGINT, primary_key=True)
+    schedule_id = db.Column(db.BIGINT,  db.ForeignKey('schedule.id'))
+    type = db.Column(db.BIGINT, db.ForeignKey('type.id'))
+    name = db.Column(db.String(150), nullable=False)
+    value = db.Column(db.String(150), nullable=False)
+
+    schedule = db.relationship('Schedule', back_populates='restrictions')
+
+class ScheduleRestrictionsSchema(ma.Schema):
+    class Meta:
+        model=ScheduleRestrictions
+        fields = ("id", "name","value")
 class Schedule(db.Model):
     __tablename__="schedule"
     id = db.Column(db.BIGINT, primary_key=True)
@@ -14,6 +33,21 @@ class Schedule(db.Model):
     assignments = db.relationship('Assignment', back_populates='schedule')
     status = db.Column(db.BIGINT, db.ForeignKey('type.id'))
     version = db.Column(db.Integer, nullable=False)
+
+    matrixAssingments = []
+
+class ScheduleSchema(ma.Schema):
+    class Meta:
+        model=Schedule
+        fields = ("id", "name","courses","teachers","classes_configurations","assignments","status","version","date","parent_id","restrictions","matrixAssingments")
+    courses=ma.List(ma.Nested(CourseOPSchema))
+    teachers=ma.List(ma.Nested(TeacherOPSchema))
+    classes_configurations = ma.List(ma.Nested(ClassOPSchema))
+    assignments = ma.List(ma.Nested(AssignmentSchema))
+    restrictions = ma.List(ma.Nested(ScheduleRestrictionsSchema))
+
+schedule_schema = ScheduleSchema() 
+schedules_schema = ScheduleSchema(many=True)
 
 
 class ScheduleConfigurationPriorityCriteria(db.Model):
@@ -40,15 +74,4 @@ class ScheduleAreaConfiguration(db.Model):
     priority = db.Column(db.Integer, nullable=False)
 
     schedule = db.relationship('Schedule', back_populates='area_configurations')
-
-
-class ScheduleRestrictions(db.Model):
-    __tablename__="schedule_restriction"
-    id = db.Column(db.BIGINT, primary_key=True)
-    schedule_id = db.Column(db.BIGINT,  db.ForeignKey('schedule.id'))
-    type = db.Column(db.BIGINT, db.ForeignKey('type.id'))
-    name = db.Column(db.String(150), nullable=False)
-    value = db.Column(db.String(150), nullable=False)
-
-    schedule = db.relationship('Schedule', back_populates='restrictions')
 

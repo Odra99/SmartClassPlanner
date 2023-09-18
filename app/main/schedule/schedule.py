@@ -43,8 +43,10 @@ def __PeriodsAvailables(schedule:Schedule):
     i = 0
     
     while i < no_peridos:
-        aux = start_time + (i*period_duration) 
-        classTimes.append(aux)
+        aux = start
+        start = start + (period_duration) 
+        i=i+1
+        classTimes.append({"start":str(aux),"end":str(start)})
     return classTimes
 
 

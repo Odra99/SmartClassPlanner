@@ -44,6 +44,16 @@ class AreaOp(db.Model):
     color = db.Column(db.String(150), nullable=True)
 
 
+class AreaOPSchema(ma.Schema):
+    class Meta:
+        model=AreaOp
+        fields = ("id", "name", "color")
+    
+
+area_op_schema = AreaOPSchema()
+areas_op_schema = AreaOPSchema(many=True)
+
+
 class Restrictions(db.Model):
     __tablename__ = "restriction"
     id = db.Column(db.BIGINT, primary_key=True)

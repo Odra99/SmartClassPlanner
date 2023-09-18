@@ -2,12 +2,14 @@ from app.repository import bp
 from app.extensions import db
 from flask import (request, jsonify)
 from app.repository import *
+from app.repository.schedule_repository import schedule_schema
 
 
 pathArea = '/area'
 pathTeacher = '/teacher'
 pathClassroom = '/classroom'
 pathCourse = '/course'
+pathSchedule = '/schedule'
 
 
 @bp.route(pathArea, methods=['GET'])
@@ -51,4 +53,11 @@ def getCourses():
     if request.method == 'GET':
         courses = course_repository.getAllCourses()
         return jsonify(courses), 200
+    return jsonify(), 400
+
+@bp.route(pathSchedule, methods=['GET'])
+def getSchedule():
+    if request.method == 'GET':
+        schedule = schedule_repository.getInProgressSchedule()
+        return jsonify(schedule_schema.dump(schedule)), 200
     return jsonify(), 400

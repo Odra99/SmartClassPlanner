@@ -1,5 +1,5 @@
 from app.extensions import db,ma
-from app.model.general import AreaSchema
+from app.model.general import AreaSchema, AreaOPSchema
 class TeacherSchedule(db.Model):
     __tablename__="teacher_schedule"
     id = db.Column(db.BIGINT, primary_key=True)
@@ -41,18 +41,6 @@ teacher_schema = TeacherSchema()
 teachers_schema = TeacherSchema(many=True)
 
 
-
-
-class TeacherOP(db.Model):
-    __tablename__="teacher_oc"
-    id = db.Column(db.BIGINT, primary_key=True)
-    name = db.Column(db.String(200), nullable=False)
-    schedule_id = db.Column(db.BIGINT,  db.ForeignKey('schedule.id'))
-
-    teacher_schedule = db.relationship('TeacherScheduleOP', back_populates='teacher')
-    courses = db.relationship('CourseTeacherOP', back_populates='teachers')
-    schedule = db.relationship('Schedule', back_populates='teachers')
-
 class TeacherScheduleOP(db.Model):
     __tablename__="teacher_schedule_oc"
     id = db.Column(db.BIGINT, primary_key=True)
@@ -65,3 +53,35 @@ class TeacherScheduleOP(db.Model):
 
     teacher = db.relationship('TeacherOP', back_populates='teacher_schedule')
 
+
+class TeacherScheduleOPSchema(ma.Schema):
+    class Meta:
+        model=TeacherScheduleOP
+        fields = ("id", "start_time","end_time","area")
+
+    area=ma.Nested(AreaOPSchema) 
+
+
+teacher_schedule_op_schema = TeacherScheduleOPSchema()
+teacher_schedules_op_schema = TeacherScheduleOPSchema(many=True)
+
+class TeacherOP(db.Model):
+    __tablename__="teacher_oc"
+    id = db.Column(db.BIGINT, primary_key=True)
+    name = db.Column(db.String(200), nullable=False)
+    schedule_id = db.Column(db.BIGINT,  db.ForeignKey('schedule.id'))
+
+    teacher_schedule = db.relationship('TeacherScheduleOP', back_populates='teacher')
+    courses = db.relationship('CourseTeacherOP', back_populates='teachers')
+    schedule = db.relationship('Schedule', back_populates='teachers')
+    assignment = db.relationship('Assignment', back_populates='teacher')
+
+
+class TeacherOPSchema(ma.Schema):
+    class Meta:
+        model=TeacherOP
+        fields = ("id", "name","teacher_schedule")
+    teacher_schedule=ma.List(ma.Nested(TeacherScheduleOPSchema))    
+
+teacher_op_schema = TeacherOPSchema()
+teachers_op_schema = TeacherOPSchema(many=True)
