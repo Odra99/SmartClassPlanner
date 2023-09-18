@@ -7,11 +7,13 @@ def getAllArea():
     return areas_schema.dump(all_areas)
 
 def getAllRestrictions():
-    return db.session.query(Restrictions).all()
+    all_restrictions =  db.session.query(Restrictions).all()
+    return restrictions_schema.dump(all_restrictions)
 
 
 def getAllPriorityCriteria():
-    return db.session.query(PriorityCriteria).all()
+    all_priorities= db.session.query(PriorityCriteria).all()
+    return priority_criterias_schema.dump(all_priorities)
 
 def getAreaId(id):
     return db.session.query(Area).filter_by(id=id).first()

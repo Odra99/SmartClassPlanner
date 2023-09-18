@@ -10,6 +10,8 @@ pathTeacher = '/teacher'
 pathClassroom = '/classroom'
 pathCourse = '/course'
 pathSchedule = '/schedule'
+pathRestriction = '/restriction'
+pathPriority = '/priority'
 
 
 @bp.route(pathArea, methods=['GET'])
@@ -60,4 +62,18 @@ def getSchedule():
     if request.method == 'GET':
         schedule = schedule_repository.getInProgressSchedule()
         return jsonify(schedule_schema.dump(schedule)), 200
+    return jsonify(), 400
+
+@bp.route(pathRestriction, methods=['GET'])
+def getRestrictions():
+    if request.method == 'GET':
+        restriction = general_repository.getAllRestrictions()
+        return jsonify(restriction), 200
+    return jsonify(), 400
+
+@bp.route(pathPriority, methods=['GET'])
+def getPriority():
+    if request.method == 'GET':
+        priority = general_repository.getAllPriorityCriteria()
+        return jsonify((priority)), 200
     return jsonify(), 400

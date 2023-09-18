@@ -8,6 +8,15 @@ class PriorityCriteria(db.Model):
     type = db.Column(db.BIGINT, db.ForeignKey('type.id'))
     subtype = db.Column(db.BIGINT, db.ForeignKey('type.id'))
 
+class priorityCriteriaSchema(ma.Schema):
+    class Meta:
+        model=PriorityCriteria
+        fields = ("id", "description")
+    
+
+priority_criteria_schema = priorityCriteriaSchema()
+priority_criterias_schema = priorityCriteriaSchema(many=True)
+
 
 class Type(db.Model):
     __tablename__ = "type"
@@ -60,3 +69,13 @@ class Restrictions(db.Model):
     type = db.Column(db.BIGINT, db.ForeignKey('type.id'))
     name = db.Column(db.String(150), nullable=False)
     value = db.Column(db.String(150), nullable=False)
+
+class RestrictionsSchema(ma.Schema):
+    class Meta:
+        model=Restrictions
+        fields = ("id", "name", "value")
+    
+
+restriction_schema = RestrictionsSchema()
+restrictions_schema = RestrictionsSchema(many=True)
+
