@@ -21,7 +21,10 @@ class PriorityTypeEnum(Enum):
     TEACHER=8
     TEACHER_SCHEDULE=9
     TEACHER_COURSE_PRIORITY=10
+    COURSE_MANDATORY=15
 
 class StatusEnum(Enum):
     IN_PROGRESS=13
     FINISHED=14
+    ACTIVE=16
+    INACTIVE=17

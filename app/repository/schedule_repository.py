@@ -5,12 +5,17 @@ from app.enums import StatusEnum, RestrictionEnum
 from app.main.schedule.scheduleFunctions import searchRestriction, transformTimeDelta
 import numpy as np
 import pandas as pd
-from collections import OrderedDict
+from sqlalchemy import desc,asc
 
 
 def getInProgressSchedule():
     schedule = db.session.query(Schedule).filter_by(
-        parent_id=None, status=StatusEnum.IN_PROGRESS.value).first()
+        parent_id=None, status=StatusEnum.IN_PROGRESS.value).order_by(asc(Schedule.version)).first()
+    schedule.matrixAssingments = __matrixGenerator(schedule)
+    return schedule
+
+def getInProgressScheduleF():
+    schedule = db.session.query(Schedule).filter_by( status=StatusEnum.IN_PROGRESS.value).order_by(desc(Schedule.version)).first()
     schedule.matrixAssingments = __matrixGenerator(schedule)
     return schedule
 
@@ -70,13 +75,20 @@ def __PeriodsAvailables(schedule: Schedule):
     period_duration = searchRestriction(
         schedule.restrictions, RestrictionEnum.PERIODS_DURATION)
 
+    if(start_time is None):
+        start_time="07:50:00"
+    if(end_time is None):
+        end_time="21:10:00"
+    if(period_duration is None):
+        period_duration = "00:50"
+
     start = transformTimeDelta(start_time)
     end = transformTimeDelta(end_time)
     period_duration = transformTimeDelta(period_duration, '%H:%M')
 
     total_time = end - start
 
-    no_peridos = (total_time / period_duration)
+    no_peridos = (total_time / period_duration) 
 
     classTimes = []
 

@@ -3,6 +3,9 @@ from app.extensions import db
 from flask import (request, jsonify)
 from app.repository import *
 from app.repository.schedule_repository import schedule_schema
+from app.main.schedule.schedule import scheduleGeneration
+from app.model.schedule import Schedule
+from functools import wraps
 
 
 pathArea = '/area'
@@ -12,6 +15,15 @@ pathCourse = '/course'
 pathSchedule = '/schedule'
 pathRestriction = '/restriction'
 pathPriority = '/priority'
+
+def convert_input_to(class_):
+    def wrap(f):
+        def decorator(*args):
+            obj = class_(**request.get_json())
+            return f(obj)
+        return decorator
+    return wrap
+
 
 
 @bp.route(pathArea, methods=['GET'])
@@ -77,3 +89,12 @@ def getPriority():
         priority = general_repository.getAllPriorityCriteria()
         return jsonify((priority)), 200
     return jsonify(), 400
+
+@bp.route(pathSchedule+"/generate",methods=['POST'])
+def generateSchedule():
+    schedule = request.get_json()
+    sched = schedule_schema.load(schedule)
+    scheduleGeneration(sched)
+
+    return jsonify(), 200
+

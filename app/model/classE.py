@@ -13,11 +13,13 @@ class ClassSchedule(db.Model):
 
     classE = db.relationship('Class', back_populates='class_schedule')
 
+    area_name=""
+
 
 class ClassScheduleSchema(ma.Schema):
     class Meta:
         model = ClassSchedule
-        fields = ("id", "start_time", "end_time", "area")
+        fields = ("id", "start_time", "end_time", "area","area_name")
 
     area = ma.Nested(AreaSchema)
 
@@ -54,11 +56,13 @@ class ClassScheduleOP(db.Model):
 
     classE = db.relationship('ClassOP', back_populates='class_schedule')
 
+    area_name=""
+
 
 class ClassScheduleOPSchema(ma.Schema):
     class Meta:
         model = ClassScheduleOP
-        fields = ("id", "start_time", "end_time", "area")
+        fields = ("id", "start_time", "end_time", "area","area_name")
 
     area = ma.Nested(AreaOPSchema)
 
@@ -70,12 +74,14 @@ class ClassOP(db.Model):
     status = db.Column(db.BIGINT, db.ForeignKey('type.id'))
 
     schedule_id = db.Column(db.BIGINT,  db.ForeignKey('schedule.id'))
+    
 
     class_schedule = db.relationship(
         'ClassScheduleOP', back_populates='classE')
     schedule = db.relationship(
         'Schedule', back_populates='classes_configurations')
     assignment = db.relationship('Assignment', back_populates='classroom')
+
     
 class ClassOPSchema(ma.Schema):
     class Meta:

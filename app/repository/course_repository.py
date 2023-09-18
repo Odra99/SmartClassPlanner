@@ -12,5 +12,5 @@ def getAllAssignment():
     return db.session.query(CourseAssignments).all()
 
 
-def getCourseOPByCode(code,scheduleId):
-    return db.session.query(CourseOP).filter_by(code=code,schedule_id=scheduleId).first()
+def getCourseOPByCode(code,scheduleId,area_id):
+    return db.session.query(CourseOP).filter_by(code=code,schedule_id=scheduleId,area_id=area_id).first()

@@ -8,7 +8,6 @@ class CourseSchedule(db.Model):
     start_time = db.Column(db.TIME, nullable=False)
     end_time = db.Column(db.TIME, nullable=False)
     course_id = db.Column(db.BIGINT,  db.ForeignKey('course.id'))
-    area_id = db.Column(db.BIGINT,  db.ForeignKey('area.id'),nullable=True) 
 
 
     course = db.relationship('Course', back_populates='course_schedule')
@@ -16,9 +15,7 @@ class CourseSchedule(db.Model):
 class CourseScheduleSchema(ma.Schema):
     class Meta:
         model = CourseSchedule
-        fields = ("id", "start_time", "end_time", "area")
-
-    area = ma.Nested(AreaSchema)
+        fields = ("id", "start_time", "end_time")
     
 class Course(db.Model):
     __tablename__="course"
@@ -59,6 +56,34 @@ class CourseAssignments(db.Model):
     code = db.Column(db.String(10), nullable=True)
     no_students = db.Column(db.Integer, nullable=False)
 
+class CourseAssignmentsSchema(ma.Schema):
+    class Meta:
+        model = CourseAssignments
+        fields = ("id", "no_students", "code")
+
+
+course_assignment_schema = CourseAssignmentsSchema()
+courses_assignments_schema = CourseAssignmentsSchema(many=True)
+
+class CourseAssignmentsOP(db.Model):
+    __tablename__="course_assignment_oc"
+    id = db.Column(db.BIGINT, primary_key=True)
+    code = db.Column(db.String(10), nullable=True)
+    no_students = db.Column(db.Integer, nullable=False)
+    schedule_id = db.Column(db.BIGINT,  db.ForeignKey('schedule.id'))
+
+
+    schedule = db.relationship('Schedule', back_populates='course_assignment')
+
+class CourseAssignmentsSchemaOP(ma.Schema):
+    class Meta:
+        model = CourseAssignmentsOP
+        fields = ("id", "no_students", "code")
+
+
+course_assignment_op_schema = CourseAssignmentsSchemaOP()
+courses_assignments_op_schema = CourseAssignmentsSchemaOP(many=True)
+
 
 class CourseScheduleOP(db.Model):
     __tablename__="course_schedule_oc"
@@ -67,7 +92,6 @@ class CourseScheduleOP(db.Model):
     start_time = db.Column(db.TIME, nullable=False)
     end_time = db.Column(db.TIME, nullable=False)
     course_id = db.Column(db.BIGINT,  db.ForeignKey('course_oc.id'))
-    area_id = db.Column(db.BIGINT,  db.ForeignKey('area_oc.id'),nullable=True) 
     
 
     course = db.relationship('CourseOP', back_populates='course_schedule')
@@ -75,9 +99,7 @@ class CourseScheduleOP(db.Model):
 class CourseScheduleOPSchema(ma.Schema):
     class Meta:
         model = CourseScheduleOP
-        fields = ("id", "start_time", "end_time", "area")
-
-    area = ma.Nested(AreaOPSchema)
+        fields = ("id", "start_time", "end_time")
 
 
 class CourseOP(db.Model):
@@ -86,7 +108,7 @@ class CourseOP(db.Model):
     name = db.Column(db.String(200), nullable=False)
     code = db.Column(db.String(10), nullable=True)
     credits = db.Column(db.Integer, nullable=True)
-    area_id = db.Column(db.BIGINT,  db.ForeignKey('area.id')) 
+    area_id = db.Column(db.BIGINT,  db.ForeignKey('area_oc.id')) 
     semester = db.Column(db.Integer,  nullable=True) 
     no_periods = db.Column(db.Integer,  nullable=True) 
     no_students = db.Column(db.Integer,  nullable=True) 
@@ -99,11 +121,12 @@ class CourseOP(db.Model):
     course_teachers = db.relationship('CourseTeacherOP', back_populates='course')
 
     assigned = False
+    area_name=""
 
 class CourseOPSchema(ma.Schema):
     class Meta:
         model = CourseOP
-        fields = ("id", "name", "code","semester","no_periods","mandatory", "course_schedule")
+        fields = ("id", "name", "code","semester","no_periods","mandatory", "course_schedule","area_name")
     course_schedule = ma.List(ma.Nested(CourseScheduleOPSchema))
 
 
@@ -115,8 +138,17 @@ class CourseTeacherOP(db.Model):
     id = db.Column(db.BIGINT, primary_key=True)
     course_id = db.Column(db.BIGINT,  db.ForeignKey('course_oc.id'))
     teacher_id = db.Column(db.BIGINT, db.ForeignKey('teacher_oc.id'))
+    area_id = db.Column(db.BIGINT, db.ForeignKey('area_oc.id'))
     priority = db.Column(db.Integer, nullable=False)
     
 
     teachers = db.relationship('TeacherOP', back_populates='courses')
     course = db.relationship('CourseOP', back_populates='course_teachers')
+
+    code=""
+    area_name=""
+
+class CourseTeacherOPSchema(ma.Schema):
+    class Meta:
+        model = CourseTeacherOP
+        fields = ("id", "area_name", "priority","code")

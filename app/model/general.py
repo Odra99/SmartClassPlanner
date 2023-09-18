@@ -51,6 +51,10 @@ class AreaOp(db.Model):
     id = db.Column(db.BIGINT, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     color = db.Column(db.String(150), nullable=True)
+    schedule_id = db.Column(db.BIGINT,  db.ForeignKey('schedule.id'))
+
+    schedule = db.relationship('Schedule', back_populates='areas')
+    schedule_conf = db.relationship('ScheduleAreaConfiguration', back_populates='area')
 
 
 class AreaOPSchema(ma.Schema):

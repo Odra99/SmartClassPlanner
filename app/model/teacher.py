@@ -1,5 +1,6 @@
 from app.extensions import db,ma
 from app.model.general import AreaSchema, AreaOPSchema
+from app.model.course import CourseTeacherOPSchema
 class TeacherSchedule(db.Model):
     __tablename__="teacher_schedule"
     id = db.Column(db.BIGINT, primary_key=True)
@@ -80,8 +81,9 @@ class TeacherOP(db.Model):
 class TeacherOPSchema(ma.Schema):
     class Meta:
         model=TeacherOP
-        fields = ("id", "name","teacher_schedule")
-    teacher_schedule=ma.List(ma.Nested(TeacherScheduleOPSchema))    
+        fields = ("id", "name","teacher_schedule","courses")
+    teacher_schedule=ma.List(ma.Nested(TeacherScheduleOPSchema))
+    courses=ma.List(ma.Nested(CourseTeacherOPSchema))    
 
 teacher_op_schema = TeacherOPSchema()
 teachers_op_schema = TeacherOPSchema(many=True)
